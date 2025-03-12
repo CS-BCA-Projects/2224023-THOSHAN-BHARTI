@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Creator | Healing Music</title>
+    <link rel="stylesheet" href="create.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="logo">🎵 Healing Music</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index">Home</a></li>
+                <li><a href="playlis">Playlists</a></li>
+                <li><a href="create" class="active">Create Sound</a></li>
+                <li><a href="login">Login</a></li>
+                <li><a href="admin">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sound Creation Section -->
+    <section class="sound-create">
+        <h2>🎧 Create Your Healing Sound</h2>
+        <p>Mix, upload, and generate soothing sounds for a better mind.</p>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <label for="upload-file">🎶 Upload Sound File:</label>
+            <input type="file" id="upload-file" accept="audio/*">
+        </div>
+
+        <!-- Controls for Mixing -->
+        <div class="mixing-controls">
+            <h3>🎛️ Adjust Sound</h3>
+            <label>Volume</label>
+            <input type="range" min="0" max="100" value="50">
+            
+            <label>Echo</label>
+            <input type="range" min="0" max="100" value="20">
+            
+            <label>Reverb</label>
+            <input type="range" min="0" max="100" value="30">
+        </div>
+
+        <!-- Preview Player -->
+        <div class="preview">
+            <h3>🎵 Preview Your Sound</h3>
+            <audio controls id="preview-audio">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio tag.
+            </audio>
+        </div>
+
+        <!-- Generate & Save Button -->
+        <button class="generate-btn">🎼 Generate Sound</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
