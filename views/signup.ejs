@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGN PAGE</title>
+  <link rel="stylesheet" href="style.css">
+  <STYLE>
+    * {
+      box-sizing: border-box
+    }
+
+    /* Add padding to containers */
+    .container {
+      padding: 16px;
+    }
+
+    /* Full-width input fields */
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 15px;
+      margin: 5px 0 22px 0;
+      display: inline-block;
+      border: none;
+      background: #f1f1f1;
+    }
+
+    input[type=text]:focus,
+    input[type=password]:focus {
+      background-color: #ddd;
+      outline: none;
+    }
+
+    /* Overwrite default styles of hr */
+    hr {
+      border: 1px solid #f1f1f1;
+      margin-bottom: 25px;
+    }
+
+    /* Set a style for the submit/register button */
+    .registerbtn {
+      background-color: "677oe7";
+      color: white;
+      padding: 16px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      opacity: 0.9;
+    }
+
+    .registerbtn:hover {
+      opacity: 1;
+    }
+
+    /* Add a blue text color to links */
+    a {
+      color: rgb(43, 86, 129);
+    }
+
+
+    /* General Body Styling */
+    body {
+      background-color: #ffe6f2;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Container Styling */
+    .container {
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      margin-top: 40px;
+    }
+
+    /* Header Styling */
+    header {
+      background: #ff66b2;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      border-radius: 20px 20px 0 0;
+    }
+
+    /* Navigation Bar Styling */
+    .navbar {
+      background-color: #ff99cc;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: #ff66b2;
+      transition: background 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #ff3385;
+    }
+
+    /* Signup Form Styling */
+    .input-field {
+      width: 96%;
+      padding: 10px;
+      border: 2px solid #ffb3d9;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    button,
+    .btn-primary {
+      background-color: #ff66b2;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover,
+    .btn-primary:hover {
+      background-color: #ff3385;
+    }
+
+    /* Already have an account? */
+    .signin {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      border-radius: 0 0 20px 20px;
+      margin-top: 10px;
+    }
+
+    .signin a {
+      color: #ff66b2;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .signin a:hover {
+      text-decoration: underline;
+    }
+  </STYLE>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Sign up</h1>
+      <nav>
+
+        <ul class="nav-links">
+          <li><a href="home">Home</a></li>
+          <li><a href="playlist">Playlists</a></li>
+          <li><a href="login">Login</a></li>
+          <li><a href="signup">signup</a></li>
+
+        </ul>
+      </nav>
+    </header>
+
+    <div class="menu-toggle">&#9776;</div>
+
+    <form action="/signup" method="POST" id="signupForm">
+      <div class="container">
+        <h1>Register</h1>
+
+        <hr>
+
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Enter Email" name="email" id="email" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" id="psw" required>
+
+        <label for="psw-repeat"><b>Confirm Password</b></label>
+        <input type="password" placeholder="Confirm Password" name="cnfPassword" id="psw-repeat" required>
+        <hr>
+        <button type="submit" class="registerbtn">Register</button>
+        <p> Already Registeed ? <a href="login" class="login">LOGIN</a></p>
+      </div>
+    </form>
+
+</body>
+<script>
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log(data)
+    if (data.password !== data.cnfPassword) {
+      alert('Passwords do not match!');
+      return; // Prevent submission if passwords don't match
+    }
+
+    try {
+      const response = await fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(result.message);
+        console.log("Redirecting to:", result.redirectUrl); // Confirm URL
+        window.location.href = result.redirectUrl;
+      }
+      else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An unexpected error occurred.');
+    }
+  });
+
+</script>
+
+</html>
