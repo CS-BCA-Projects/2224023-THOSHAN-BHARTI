@@ -1,136 +1,82 @@
 const express = require('express');
-const connectDB = require('./db/index');
 const app = express();
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
+const connectDB = require('./db'); 
+const authRoutes = require('./routes/auth'); 
+const signRoutes = require('./routes/sign'); 
+const logoutRoute = require('./routes/logout'); 
+const playRoutes = require('./routes/play'); 
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const axios = require('axios');
 
-// Set up EJS as the templating engine
+
+
+
+
+// Import Data (run only once manually)
+// const importData = require('./importData');
+// importData().catch(err => {
+//     console.error('❗ Data import error:', err);
+// });
+
+// Database Connection
+connectDB();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Session Middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } 
+}));
+
+// Set EJS as the templating engine
 app.set('view engine', 'ejs');
-
-// Define the path for views
 app.set('views', path.join(__dirname, 'views'));
 
+// Static Files (for CSS, images, etc.)
 
 
-// MongoDB connection URI (replace <your-connection-string> with your actual MongoDB URI)
-// Local MongoDB setup
-// Or for MongoDB Atlas:
-// const dbURI = 'mongodb+srv://<username>:<password>@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority';
+// Routes
+app.use('/login', authRoutes);
+app.use('/signup', signRoutes);
+app.use('/', logoutRoute);  
+app.use('/', playRoutes);
 
-app.get('/', (req, res) => {
-    res.send('MongoDB Connection Example');
-});
+// Main Pages
+app.get('/', (req, res) => res.render('home'));
+app.get('/home', (req, res) => res.render('home'));
 
+app.get('/playlist', async (req, res) => {
+    const genreFilter = req.query.genre;
+    let query = {};
 
-app.get('/index',(req,res)=>{
-    res.render('index')
-})
-app.get('/playlist', (req, res) => {
-    res.render('playlist')
-});
-app.get('/create',(req,res)=>{
-    res.render('create')
-})
-app.get('/admin',(req,res)=>{
-    res.render('admin')
-})
-app.get('/login',(req,res)=>{
-    res.render('login')
-})
+    if (genreFilter && genreFilter !== 'All') {
+        query = { Genre: { $regex: new RegExp(genreFilter, 'i') } };
+    }
 
-// Routes for CRUD operations
-app.get('/api/playlists', (req, res) => {
-    db.query('SELECT * FROM playlists', (err, results) => {
-        if (err) {
-            res.status(500).json({ error: 'Failed to fetch playlists' });
-            return;
-        }
-        res.json(results);
+    const musicData = await Music.find(query);
+
+    res.render('playlist', { 
+        musicData, 
+        genreFilter 
     });
 });
 
-app.post('/api/playlists', (req, res) => {
-    const { name, category, description } = req.body;
-    db.query(
-        'INSERT INTO playlists (name, category, description) VALUES (?, ?, ?)',
-        [name, category, description],
-        (err, results) => {
-            if (err) {
-                res.status(500).json({ error: 'Failed to create playlist' });
-                return;
-            }
-            res.status(201).json({ message: 'Playlist created' });
-        }
-    );
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error('❗ Error:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
 });
 
-app.put('/api/playlists/:id', (req, res) => {
-    const { id } = req.params;
-    const { name, category, description } = req.body;
-    db.query(
-        'UPDATE playlists SET name = ?, category = ?, description = ? WHERE id = ?',
-        [name, category, description, id],
-        (err, results) => {
-            if (err) {
-                res.status(500).json({ error: 'Failed to update playlist' });
-                return;
-            }
-            res.json({ message: 'Playlist updated' });
-        }
-    );
-});
-
-app.delete('/api/playlists/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM playlists WHERE id = ?', [id], (err, results) => {
-        if (err) {
-            res.status(500).json({ error: 'Failed to delete playlist' });
-            return;
-        }
-        res.json({ message: 'Playlist deleted' });
-    });
-});
-
-
-
-// Route: Display Login Form
-// app.get('/', (req, res) => {
-//     res.render('login');
-// });
-
-// // Route: Handle Form Submission (Insert Data)
-// app.post('/login', async (req, res) => {
-//     const { username, password } = req.body;
-
-//     if (!username || !password) {
-//         return res.status(400).send("❗ Username and password are required.");
-//     }
-
-//     try {
-//         const existingUser = await collection.findOne({ username });
-
-//         if (existingUser) {
-//             res.send("🚨 User already exists! Please log in.");
-//         } else {
-//             await collection.insertOne({ username, password });
-//             res.send("✅ Registration successful!");
-//         }
-//     } catch (error) {
-//         console.error("❌ Error inserting data:", error);
-//         res.status(500).send("❌ Internal server error");
-//     }
-// });
-
-// // Start the server
-// app.listen(PORT, () => {
-//     console.log(`🚀 Server running on http://localhost:${process.env.PORT}`);
-// });
-connectDB()
-   .then(() => {
-       app.listen(process.env.PORT, () => {
-            console.log(`Server is running on http:localhost:${process.env.PORT}`);
-       });
-}).catch((err) =>{
-    console.error(err);
-})
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));

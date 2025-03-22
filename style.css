@@ -1,0 +1,83 @@
+body {
+    background-color: #ffe6f2; /* Soft pink background */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 40px;
+}
+
+h1, h2, h3 {
+    color: #ff66b2; /* Darker pink for titles */
+    text-align: center;
+}
+
+a {
+    color: #ff3399; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.navbar {
+    background-color: #ff99cc;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+}
+
+.navbar a {
+    margin: 0 10px;
+    color: #fff;
+}
+
+.audio-section {
+    background-color: #fff5f8;
+    border: 2px solid #ffb3d9;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.audio-section h3 {
+    margin-top: 0;
+    color: #ff3385;
+}
+
+button, .btn-primary {
+    background-color: #ff66b2;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover, .btn-primary:hover {
+    background-color: #ff3385;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffb3d9;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}

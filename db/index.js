@@ -1,16 +1,16 @@
-const mongoose = require ('mongoose');
-const DB_Name = 'SoundscapeSystem';
-//const fs = require('fs')// 
+const mongoose = require('mongoose');
+const DB_NAME = 'harmonydb'
 const connectDB = async () => {
-    try{
-        const conn = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_Name}`);
-        console.log(`MongoDB Connected ! DB Host : ${conn.connection.host}`);
+    try {
+        await mongoose.connect(`${process.env.MONGODB_URI}${DB_NAME}`, {
+            
+        });
+        console.log('MongoDB Atlas connected successfully!');
+    } catch (error) {
+        console.error('MongoDB connection error:', error.message);
+        process.exit(1); // Exit process with failure
     }
-    catch(err){
-        console.error(err);
-        process.exit(1);
-    }
-}
+};
+
+
 module.exports = connectDB;
-
-
