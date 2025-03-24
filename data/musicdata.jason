@@ -54,5 +54,13 @@
         "Genre": "Classical / Piano",
         "Duration": "4:56",
         "Spotify_Link": "https://open.spotify.com/track/7EQ17pXy1NW8BF3Uopdb2C"
+    },
+    {
+        "title": "Natya Shastra",
+        "author": "Bharata Muni",
+        "genre": "Performing Arts",
+        "description": "A classical Sanskrit text on theatre, dance, and music.",
+        "contentUrl": "https://example.com/natya-shastra.pdf"
+        "Spotify_Link": "https://open.spotify.com/track/7EQ17pXy1NW8BF3Uopdb2C"
     }
 ]

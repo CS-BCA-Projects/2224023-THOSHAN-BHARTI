@@ -251,7 +251,10 @@ h1 {
                             <% }) %>
                         </tbody>
                     </table>
-                </div>
+                    <!-- Spotify Embed Player -->
+<iframe id="spotifyPlayer" style="display:none; width:100%; height:80px;" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+
             </div>
         </div>
 
@@ -278,7 +281,7 @@ h1 {
         const breathingText = document.getElementById('breathing-text');
         const startButton = document.getElementById('start-button');
         const stopButton = document.getElementById('stop-button');
-
+        
         let breathingInterval;
 
         function startBreathing() {
@@ -320,6 +323,33 @@ h1 {
         startButton.addEventListener('click', startBreathing);
         stopButton.addEventListener('click', stopBreathing);
     });
+
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playButtons = document.querySelectorAll('.play-btn');
+
+    playButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();  // Prevent default link behavior
+            const audioSrc = button.getAttribute('data-src');
+            if (audioSrc) {
+                audioPlayer.src = audioSrc;
+                audioPlayer.play();
+            }
+        });
+    });
+   
+    playButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const audioSrc = button.getAttribute('data-src');
+            if (audioSrc) {
+                const embedURL = audioSrc.replace('/track/', '/embed/track/');
+                spotifyPlayer.src = embedURL;
+                spotifyPlayer.style.display = 'block';
+            }
+        });
+    });
+
 </script>
 
 </html>
