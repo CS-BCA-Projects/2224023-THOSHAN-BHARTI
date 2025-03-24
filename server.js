@@ -11,8 +11,8 @@ const playRoutes = require('./routes/play');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
-
-
+const Music = require('./models/musics.js');
+const profileRoutes = require('./routes/profile.js'); 
 
 
 
@@ -50,26 +50,12 @@ app.use('/login', authRoutes);
 app.use('/signup', signRoutes);
 app.use('/', logoutRoute);  
 app.use('/', playRoutes);
-
+app.use( '/',profileRoutes);
 // Main Pages
 app.get('/', (req, res) => res.render('home'));
 app.get('/home', (req, res) => res.render('home'));
 
-app.get('/playlist', async (req, res) => {
-    const genreFilter = req.query.genre;
-    let query = {};
 
-    if (genreFilter && genreFilter !== 'All') {
-        query = { Genre: { $regex: new RegExp(genreFilter, 'i') } };
-    }
-
-    const musicData = await Music.find(query);
-
-    res.render('playlist', { 
-        musicData, 
-        genreFilter 
-    });
-});
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
