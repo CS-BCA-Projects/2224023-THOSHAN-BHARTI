@@ -1,4 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Streaming Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#9B51E0',
+                        secondary: '#FF4D8D',
+                        darkBg: '#1a1a2e',
+                        accent: '#e94560'
+                    },
+                    borderRadius: {
+                        'button': '12px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #1a1a2e; color: #fff; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #9B51E0 100%);
+        }
+        h1, h3 { text-shadow: 2px 2px 8px #e94560; }
+        .box img { border-radius: 12px; transition: transform 0.3s ease-in-out; }
+        .box img:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.6); }
+        .animated-text {
+            animation: fadeIn 3s ease-in-out infinite alternate;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="gradient-bg min-h-screen">
+        <header class="bg-darkBg">
+            <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="ri-play-circle-line text-primary text-2xl"></i>
+                    <span class="font-['Pacifico'] text-2xl text-white">Play</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="home" class="text-white hover:text-secondary">Home</a>
+                    <a href="playlist" class="text-white hover:text-secondary">Discover</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="px-6 py-2 text-white border border-secondary rounded-button hover:bg-secondary"><a href="login"> Login</a></button>
+                    <button class="px-6 py-2 text-white bg-secondary rounded-button hover:bg-opacity-90"><a href="signup">Sign up</a></button>
+                </div>
+            </nav>
+        </header>
 
+        <main>
+            <section class="container mx-auto px-6 py-16 text-center">
+                <h1 class="text-5xl font-bold text-white animated-text">"Where words fail, music speaks."</h1>
+                <p class="text-secondary text-lg mt-4">Experience the healing power of sound</p>
+            </section>
+
+            <section class="bg-darkBg py-20">
+                <div class="container mx-auto px-6">
+                    <div class="grid md:grid-cols-3 gap-12">
+                        <div class="text-center box">
+                            <img src="/images/morning.jpg" alt="Morning Meditation" class="w-64 mx-auto">
+                            <h3 class="text-2xl font-semibold text-white mt-4">Morning Meditation</h3>
+                        </div>
+                        <div class="text-center box">
+                            <img src="/images/sleep.jpg" alt="Deep Sleep" class="w-64 mx-auto">
+                            <h3 class="text-2xl font-semibold text-white mt-4">Deep Sleep</h3>
+                        </div>
+                        <div class="text-center box">
+                            <img src="/images/soothingstrings.jpg" alt="Soothing Strings" class="w-64 mx-auto">
+                            <h3 class="text-2xl font-semibold text-white mt-4">Soothing Strings</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+</body>
+</html>
+
+
+
+
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,7 +206,7 @@
               
             
 </body>
-</html>
+</html> -->
 
 
 

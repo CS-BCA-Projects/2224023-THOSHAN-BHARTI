@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const axios = require('axios');
 const Music = require('./models/musics.js');
 const profileRoutes = require('./routes/profile.js'); 
+app.use(express.static('public'));
 
 
 

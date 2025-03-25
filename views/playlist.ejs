@@ -1,355 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Music Playlist</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+   
+</head>
+
+<style>
     body {
-    background-color: #ffe4e1;
+    background-color: #121212;
+    color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-}
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
     text-align: center;
-    color: #d147a3;
 }
 
-.content {
-    display: flex;
-    gap: 20px;
+.navbar {
+    background-color: #ff69b4;
+    padding: 15px;
 }
 
-.sidebar {
-    background-color: #ffb6c1;
-    padding: 20px;
-    border-radius: 12px;
-    width: 25%;
-}
-
-.sidebar h2 {
-    color: #d147a3;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar li {
-    padding: 5px 0;
-}
-
-.sidebar .active a {
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 15px;
     font-weight: bold;
-    color: #fff;
-    background-color: #d147a3;
-    padding: 5px 10px;
-    border-radius: 12px;
-    text-decoration: none;
 }
 
-.sidebar a {
-    text-decoration: none;
-    color: #d147a3;
+.categories {
+    margin: 20px 0;
 }
 
-.meditation-section {
-        background-color: #ffb6c1;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+.categories button {
+    background-color: #ff69b4;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 20px;
+    color: #ffffff;
+    cursor: pointer;
+}
 
-    .meditation-text {
-        font-style: italic;
-        color: #d147a3;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
+.playlist-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
 
-    .audio-player {
-        background-color: #ffe4e1;
-        padding: 10px;
-        border-radius: 8px;
-        display: inline-block;
-    }
-
-    audio {
-        width: 100%;
-        border: none;
-    }
-.breathing-section {
+.box {
+    background-color: #1f1f1f;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
     text-align: center;
-    margin-top: 30px;
+    overflow: hidden;
 }
 
-.breathe-button {
-    background-color: #d147a3;
-    color: #fff;
+.box img {
+    width: 250px;
+    height: 150px;
+    border-radius: 15px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.box p {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.play-btn {
+    background-color: #ff69b4;
+    border: none;
     padding: 10px 20px;
     border-radius: 20px;
-    text-decoration: none;
-}
-.sidebar li a {
-    text-decoration: none;
-    color: #d147a3;
+    color: #ffffff;
+    cursor: pointer;
 }
 
-.sidebar .active a {
-    font-weight: bold;
-    color: #fff;
-    background-color: #d147a3;
-    padding: 5px 10px;
-    border-radius: 12px;
-}
-
-.breathing-section {
-        background: linear-gradient(135deg, #ffe4e1, #ffb6c1);
-        border-radius: 20px;
-        padding: 40px;
-        margin: 40px auto;
-        width: 70%;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .breathing-area {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    .breathing-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50%;
-    }
-
-    .breathing-circle {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        background-color: #d147a3;
-        transition: all 4s ease-in-out;
-    }
-
-    .inhale {
-        transform: scale(2);
-        background-color: #ffb6c1;
-    }
-
-    .hold {
-        background-color: #d147a3;
-        transform: scale(1.5);
-    }
-
-    .exhale {
-        transform: scale(1);
-        background-color: #ff69b4;
-    }
-
-    #breathing-text {
-        margin-top: 15px;
-        color: #d147a3;
-        font-weight: bold;
-        font-size: 1.4rem;
-    }
-
-    .breathing-controls {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .breathe-button {
-        background-color: #d147a3;
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 20px;
-        border: none;
-        cursor: pointer;
-        width: 150px;
-    }
-
-    .breathe-button:hover {
-        background-color: #ff69b4;
-    }
-  </style>
-</head>
+</style>
 <body>
-    <div class="container">
-        <h1>Music Playlist</h1>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/playlist">Playlist</a>
+        <a href="/signup">Signup</a>
+        <a href="/login">Login</a>
+    </div>
 
-        <div class="content">
-            <!-- Genre Section -->
-            <div class="sidebar">
-                <h2>Genres</h2>
-                <ul>
-                    <li class="<%= !genreFilter ? 'active' : '' %>">
-                        <a href="/playlist">All</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Ambient' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Ambient">Ambient</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Classical' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Classical">Classical</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Nature / Ambient' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Nature / Ambient">Nature / Ambient</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Meditation / Solfeggio' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Meditation / Solfeggio">Meditation / Solfeggio</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Ambient / Study' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Ambient / Study">Ambient / Study</a>
-                    </li>
-                    <li class="<%= genreFilter === 'Classical / Piano' ? 'active' : '' %>">
-                        <a href="/playlist?genre=Classical / Piano">Classical / Piano</a>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Playlist Section -->
-            <div class="meditation-section">
-                <h2>Today's Meditation Thought</h2>
-                <p class="meditation-text">
-                    "Embrace the present moment. Let your mind find calmness in stillness."
-                </p>
-                
+    <div class="categories">
+        <button>Relax</button>
+        <button>Focus</button>
+        <button>Energy</button>
+        <button>Calm</button>
+    </div>
 
-                <div class="playlist-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Artist</th>
-                                <th>Duration</th>
-                                <th>Listen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% musicData.forEach(song => { %>
-                                <tr>
-                                    <td><%= song.Title %></td>
-                                    <td><%= song.Artist %></td>
-                                    <td><%= song.Duration %></td>
-                                    <td>
-                                        <a href="<%= song.Spotify_Link %>" target="_blank">Play</a>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                    <!-- Spotify Embed Player -->
-<iframe id="spotifyPlayer" style="display:none; width:100%; height:80px;" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-
-
-            </div>
+    <div class="playlist-container">
+        <div class="box">
+            <img src="/images/morning.jpg" alt="Focused" loading="lazy">
+            <p>Focused</p>
+            <button class="play-btn">Play</button>
         </div>
-
-        <!-- Breathing Exercise Section -->
-        <div class="breathing-section">
-            <h2>Relax with Guided Breathing</h2>
-            
-            <div class="breathing-area">
-                <div class="breathing-container">
-                    <div class="breathing-circle" id="breathing-circle"></div>
-                    <p id="breathing-text">Click "Breathe In" to Start</p>
-                </div>
-        
-                <div class="breathing-controls">
-                    <button id="start-button" class="breathe-button">Breathe In</button>
-                    <button id="stop-button" class="breathe-button" style="display: none;">Stop</button>
-                </div>
-            </div>
+        <div class="box">
+            <img src="/images/sleep.jpg" alt="Cozy sleep" loading="lazy">
+            <p>Cozy Sleep</p>
+            <button class="play-btn">Play</button>
         </div>
+        <div class="box">
+            <img src="/images/sea image.jpg" alt="Soothing" loading="lazy">
+            <p>Soothing</p>
+            <button class="play-btn">Play</button>
+        </div>
+        <div class="box">
+            <img src="/images/image2.jpg" alt="Bright" loading="lazy">
+            <p>Bright</p>
+            <button class="play-btn">Play</button>
+        </div>
+        <div class="box">
+            <img src="/images/rain.jpg" alt="Melancholic" loading="lazy">
+            <p>Melancholic</p>
+            <button class="play-btn">Play</button>
+        </div>
+        <div class="box">
+            <img src="/images/yoga.jpg" alt="Cheerful" loading="lazy">
+            <p>Cheerful</p>
+            <button class="play-btn">Play</button>
+        </div>
+        <div class="box">
+            <img src="/images/piano.jpg" alt="Peaceful " loading="lazy">
+            <p>Peaceful </p>
+            <button class="play-btn">Play</button>
+        </div>
+        <div class="box">
+            <img src="/images/soothingstrings.jpg" alt="Heartfelt" loading="lazy">
+            <p>Heartfelt</p>
+            <button class="play-btn">Play</button>
+        </div>
+    </div>
+    
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const breathingCircle = document.getElementById('breathing-circle');
-        const breathingText = document.getElementById('breathing-text');
-        const startButton = document.getElementById('start-button');
-        const stopButton = document.getElementById('stop-button');
-        
-        let breathingInterval;
+//changement made
+<!-- <script>
+    async function fetchSongs(emotion) {
+    const response = await fetch(`/playlist?emotion=${emotion}`);
+    const songs = await response.json();
 
-        function startBreathing() {
-            let cycle = 0;
+    const songList = document.getElementById("song-list");
+    songList.innerHTML = ""; // Clear previous results
 
-            function breatheCycle() {
-                cycle++;
-
-                if (cycle % 3 === 1) {
-                    breathingText.textContent = "Breathe In...";
-                    breathingCircle.classList.add('inhale');
-                    breathingCircle.classList.remove('hold', 'exhale');
-                } else if (cycle % 3 === 2) {
-                    breathingText.textContent = "Hold...";
-                    breathingCircle.classList.add('hold');
-                    breathingCircle.classList.remove('inhale', 'exhale');
-                } else {
-                    breathingText.textContent = "Breathe Out...";
-                    breathingCircle.classList.add('exhale');
-                    breathingCircle.classList.remove('inhale', 'hold');
-                }
-            }
-
-            breatheCycle();
-            breathingInterval = setInterval(breatheCycle, 4000);
-
-            startButton.style.display = 'none';
-            stopButton.style.display = 'inline-block';
-        }
-
-        function stopBreathing() {
-            clearInterval(breathingInterval);
-            breathingText.textContent = "Click 'Breathe In' to Start";
-            breathingCircle.className = 'breathing-circle';
-            startButton.style.display = 'inline-block';
-            stopButton.style.display = 'none';
-        }
-
-        startButton.addEventListener('click', startBreathing);
-        stopButton.addEventListener('click', stopBreathing);
+    songs.forEach(song => {
+        const songItem = document.createElement("li");
+        songItem.textContent = song;
+        songList.appendChild(songItem);
     });
+}
 
-    const audioPlayer = document.getElementById('audioPlayer');
-    const playButtons = document.querySelectorAll('.play-btn');
-
-    playButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();  // Prevent default link behavior
-            const audioSrc = button.getAttribute('data-src');
-            if (audioSrc) {
-                audioPlayer.src = audioSrc;
-                audioPlayer.play();
-            }
-        });
-    });
-   
-    playButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            const audioSrc = button.getAttribute('data-src');
-            if (audioSrc) {
-                const embedURL = audioSrc.replace('/track/', '/embed/track/');
-                spotifyPlayer.src = embedURL;
-                spotifyPlayer.style.display = 'block';
-            }
-        });
-    });
-
-</script>
-
+</script> -->
 </html>
+
+
+<!-- changes made to the code in play.js and <playlist class="ejs"></playlist> -->
