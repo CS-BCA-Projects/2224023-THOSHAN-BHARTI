@@ -141,7 +141,7 @@ app.use((req, res, next) => {
 
 // 🔀 Routes
 app.use('/login', authRoutes);
-app.use('/', signRoutes);
+app.use('/signup', signRoutes);
 app.use('/playlist', playRoutes);
 app.use('/forum', forumRoutes);
 app.use('/admin', adminRoutes);   // ✅ Added Admin Route

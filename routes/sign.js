@@ -66,7 +66,7 @@ const bcrypt = require('bcrypt');
 const sendEmail = require("../routes/email.service.js");
 
 // Render Signup Page
-router.get('/signup', (req, res) => {
+router.get('/', (req, res) => {
     res.render('signup');  // Ensure `signup.ejs` exists
 });
 
