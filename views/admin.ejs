@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Healing with Music</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .admin-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ff99cc;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .navbar a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content-section {
+            background-color: #ffffff;
+            border: 2px solid #ffb3d9;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #ff66b2;
+            text-align: center;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 2px solid #ffb3d9;
+            border-radius: 12px;
+        }
+        .btn-primary {
+            background-color: #ff66b2;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .btn-primary:hover {
+            background-color: #ff3385;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .user-list li {
+            background: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ffb3d9;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .delete-btn {
+            background: #ff3385;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .delete-btn:hover {
+            background: #cc0052;
+        }
+        .sound-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sound-list li {
+            background: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ffb3d9;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="navbar">
+            <header class="navbar">
+                <h1>Admin Dashboard</h1>
+                <nav>
+                    <a href="/">Home</a>
+                    <a href="/playlist">Playlists</a>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a>
+                    
+                    <% if (user && user.isAdmin) { %>
+                        <a href="/admin">Admin</a>
+                    <% } %>
+                </nav>
+            </header>
+            
+
+        <section class="content-section">
+            <h2>Manage Users</h2>
+            <ul id="user-list" class="user-list"></ul>
+        </section>
+
+        <section class="content-section">
+            <h2>Add New Sound</h2>
+            <form id="add-sound-form">
+                <input type="text" id="sound-title" placeholder="Sound Title" class="input-field" required>
+                <input type="text" id="sound-file" placeholder="Sound URL" class="input-field" required>
+                <button type="submit" class="btn-primary">Add Sound</button>
+                <button id="logoutButton" class="btn-primary">Logout</button>
+            </form>
+            <ul id="sound-list" class="sound-list"></ul>
+        </section>
+    </div>
+
+    <script>
+        // Fetch and Display Users
+        async function fetchUsers() {
+            const response = await fetch('/admin/users');
+            const users = await response.json();
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = users.map(user => `
+                <li>
+                    <span>${user.email}</span>
+                    <button onclick="deleteUser('${user._id}')" class="delete-btn">Delete</button>
+                </li>`).join('');
+        }
+
+        // Delete User
+        async function deleteUser(userId) {
+            await fetch(`/admin/delete-user/${userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            fetchUsers();
+        }
+
+        // Fetch and Display Sounds
+        async function fetchSounds() {
+            const response = await fetch('/admin/sounds');
+            const sounds = await response.json();
+            const soundList = document.getElementById('sound-list');
+            soundList.innerHTML = sounds.map(sound => `
+                <li>
+                    <span>${sound.title}</span>
+                    <a href="${sound.fileUrl}" target="_blank">Play</a>
+                </li>
+            `).join('');
+        }
+
+        // Add New Sound
+        document.getElementById('add-sound-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const title = document.getElementById('sound-title').value;
+            const fileUrl = document.getElementById('sound-file').value;
+            await fetch('/admin/add-sound', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, fileUrl })
+            });
+            fetchSounds();
+        });
+
+        // Logout Function
+        document.getElementById('logoutButton').addEventListener('click', async () => {
+            await fetch('/logout');
+            window.location.href = '/';
+        });
+
+        // Load Users & Sounds on Page Load
+        fetchUsers();
+        fetchSounds();
+    </script>
+</body>
+</html>

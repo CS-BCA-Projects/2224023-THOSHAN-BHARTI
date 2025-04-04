@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum with Chat</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Forum Container */
+        .forum-container, .create-post-container, .post-container, .chat-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #222;
+        }
+
+        /* Post List */
+        .post-list {
+            margin-top: 20px;
+        }
+
+        .post-card {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card h3 {
+            margin: 0;
+        }
+
+        .post-card a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .post-card p {
+            color: #555;
+        }
+
+        /* Create Post Page */
+        .create-post-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .create-post-container input,
+        .create-post-container textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+        }
+
+        .submit-btn {
+            margin-top: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .create-btn {
+            display: block;
+            text-align: center;
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .create-btn:hover, .submit-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            margin-top: 40px;
+        }
+
+        .chat-box {
+            border: 1px solid #ddd;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .chat-message {
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        .chat-message span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Forum Page -->
+    <div class="forum-container">
+        <h2>Community Forum</h2>
+        
+        <a href="javascript:void(0);" onclick="window.location.href='newPost.html'" class="create-btn">+ Create New Post</a>
+
+        <div class="post-list">
+            <div class="post-card">
+                <h3><a href="post">Sample Post Title</a></h3>
+                <p>This is a preview of the post content...</p>
+                <small>By: User123 | March 31, 2025</small>
+            </div>
+
+            <div class="post-card">
+                <h3><a href="post">Another Post</a></h3>
+                <p>Here is another preview of a different post...</p>
+                <small>By: Admin | April 1, 2025</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Page -->
+    <div class="create-post-container" style="display:none;">
+        <h2>Create a New Post</h2>
+
+        <form id="postForm">
+            <label>Title:</label>
+            <input type="text" id="postTitle" required>
+            
+            <label>Content:</label>
+            <textarea id="postContent" required></textarea>
+            
+            <button type="submit" class="submit-btn">Post</button>
+        </form>
+    </div>
+
+    <!-- Individual Post Page -->
+    <div class="post-container" style="display:none;">
+        <h2>Sample Post Title</h2>
+        <p class="author">By: User123 | March 31, 2025</p>
+        <p class="content">This is the full content of the post. Users can read and comment below.</p>
+        
+        <h3>Comments</h3>
+        <div class="comments-section">
+            <p><strong>User456:</strong> Great post! Thanks for sharing.</p>
+        </div>
+
+        <form id="commentForm">
+            <label>Add a Comment:</label>
+            <textarea id="commentText" required></textarea>
+            <button type="submit" class="submit-btn">Comment</button>
+        </form>
+    </div>
+
+    <section class="chat-section">
+        <h2>Live Chat</h2>
+        <div id="chat-box" class="chat-box"></div>
+        <input type="text" id="chat-input" placeholder="Type your message..." disabled />
+        <button id="send-chat" disabled>Send</button>
+        <p id="login-warning" style="color: red; display: none;">You must be logged in to chat.</p>
+    </section>
+    
+    </div>
+
+    <script>
+        // Show Create Post Form
+        if (window.location.pathname.includes("newPost.html")) {
+            document.querySelector('.create-post-container').style.display = 'block';
+        }
+
+        // Show Individual Post Page
+        if (window.location.pathname.includes("post.html")) {
+            document.querySelector('.post-container').style.display = 'block';
+        }
+
+        // Handle new post submission
+        document.addEventListener("DOMContentLoaded", () => {
+            const postForm = document.getElementById("postForm");
+            if (postForm) {
+                postForm.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const title = document.getElementById("postTitle").value;
+                    const content = document.getElementById("postContent").value;
+                    
+                    // Save post to local storage (mock database)
+                    const posts = JSON.parse(localStorage.getItem("forumPosts")) || [];
+                    posts.push({ title, content, author: "Anonymous", date: new Date().toDateString() });
+                    localStorage.setItem("forumPosts", JSON.stringify(posts));
+
+                    alert("Post submitted!");
+                    window.location.href = "forum.html";
+                });
+            }
+
+            // Handle comments
+            const commentForm = document.getElementById("commentForm");
+            if (commentForm) {
+                commentForm.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const commentText = document.getElementById("commentText").value;
+                    alert("Comment added: " + commentText);
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", async () => {
+    const sendButton = document.getElementById("send-chat");
+    const chatInput = document.getElementById("chat-input");
+    const loginWarning = document.getElementById("login-warning");
+
+    // Check if user is logged in
+    async function checkAuth() {
+        const response = await fetch("/checkAuth");
+        const data = await response.json();
+
+        if (data.success) {
+            chatInput.disabled = false;
+            sendButton.disabled = false;
+        } else {
+            loginWarning.style.display = "block";
+        }
+    }
+
+    checkAuth();
+
+    // Send chat message
+    sendButton.addEventListener("click", async () => {
+        if (chatInput.value.trim() !== "") {
+            const response = await fetch("/sendMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: chatInput.value })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                const chatBox = document.getElementById("chat-box");
+                const messageElement = document.createElement("div");
+                messageElement.innerHTML = `<strong>${data.user}:</strong> ${chatInput.value}`;
+                chatBox.appendChild(messageElement);
+                chatInput.value = "";
+            } else {
+                alert(data.message);
+            }
+        }
+    });
+});
+        });
+    
+</script>
+
+</body>
+</html>
