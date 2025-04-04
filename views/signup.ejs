@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGN PAGE</title>
-  <link rel="stylesheet" href="style.css">
+  <title>SIGN UP PAGE</title>
+
   <STYLE>
     * {
       box-sizing: border-box
@@ -175,13 +175,12 @@
     <header>
       <h1>Sign up</h1>
       <nav>
-
         <ul class="nav-links">
-          <li><a href="home">Home</a></li>
-          <li><a href="playlist">Playlists</a></li>
-          <li><a href="login">Login</a></li>
-          <li><a href="signup">signup</a></li>
-
+          <li><a href="/">Home</a></li>
+          <li><a href="/playlist">Playlists</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/signup">Signup</a></li>
+          <li><a href="/forum">Forum</a></li>
         </ul>
       </nav>
     </header>
@@ -191,9 +190,11 @@
     <form action="/signup" method="POST" id="signupForm">
       <div class="container">
         <h1>Register</h1>
-
         <hr>
 
+        <label>Username:</label>
+        <input type="text" name="username"  placeholder="Enter username"  required>
+    
         <label for="email"><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" required>
 
@@ -202,49 +203,73 @@
 
         <label for="psw-repeat"><b>Confirm Password</b></label>
         <input type="password" placeholder="Confirm Password" name="cnfPassword" id="psw-repeat" required>
+        
+        <!-- Favorite Genre Dropdown -->
+        <label for="favoriteGenre"><b>Favorite Genre</b></label>
+        <select name="favoriteGenre" id="favoriteGenre" required>
+          <option value="">Select a genre</option>
+          <option value="Calm">Calm</option>
+          <option value="Cheerful">Cheerful</option>
+          <option value="Relaxing">Relaxing</option>
+          <option value="Energetic">Energetic</option>
+          <!-- Add more genres as per your requirements -->
+        </select>
+        
+        
         <hr>
         <button type="submit" class="registerbtn">Register</button>
-        <p> Already Registeed ? <a href="login" class="login">LOGIN</a></p>
+        <p>Already Registered? <a href="login" class="login">LOGIN</a></p>
       </div>
     </form>
 
-</body>
-<script>
-  document.getElementById('signupForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  </div>
 
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    console.log(data)
-    if (data.password !== data.cnfPassword) {
-      alert('Passwords do not match!');
-      return; // Prevent submission if passwords don't match
-    }
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-      const response = await fetch('/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+        console.log("Signup Data:", data);
 
-      const result = await response.json();
+        if (!data.username || !data.email || !data.password || !data.cnfPassword) {
+            alert('All fields are required!');
+            return;
+        }
 
-      if (result.success) {
-        alert(result.message);
-        console.log("Redirecting to:", result.redirectUrl); // Confirm URL
-        window.location.href = result.redirectUrl;
-      }
-      else {
-        alert(result.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An unexpected error occurred.');
-    }
-  });
+        if (data.password !== data.cnfPassword) {
+            alert('Passwords do not match!');
+            return; // Prevent submission if passwords don't match
+        }
 
+        try {
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: data.username, // Ensure username is included
+                    email: data.email,
+                    password: data.password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                console.log("Redirecting to:", result.redirectUrl);
+                window.location.href = result.redirectUrl; // Redirect after successful signup
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        }
+    });
 </script>
+
+</body>
 
 </html>

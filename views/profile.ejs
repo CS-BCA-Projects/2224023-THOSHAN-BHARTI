@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #181818;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .profile-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #282828;
+            border-radius: 5px;
+            width: 150px;
+            text-align: left;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            color: white;
+        }
+        .dropdown-menu a:hover {
+            background: #383838;
+        }
+        .profile-menu:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+        .profile-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #333;
+            color: white;
+        }
+        .profile-container button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #e91e63;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .profile-container button:hover {
+            background: #c2185b;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="/">Home</a>
+        <div class="profile-menu">
+            <img src="/images/1144709.png" alt="Profile" class="profile-icon">
+            <div class="dropdown-menu">
+                <a href="/profile">My Profile</a>
+                <a href="/logout" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="profile-container">
+        <h2>My Profile</h2>
+        <form id="profile-form">
+            <label>Username:</label>
+            <input type="text" id="username" value="<%= user.username %>" disabled>
+
+            <label>Email:</label>
+            <input type="email" id="email" value="<%= user.email %>" disabled>
+
+            <label>Change Name:</label>
+            <input type="text" id="name" value="<%= user.name %>">
+
+            <button type="button" onclick="saveChanges()">Save Changes</button>
+            <button type="button" onclick="logout()">Logout</button>
+        </form>
+    </div>
+
+    <script>
+        // Save Profile Changes
+        async function saveChanges() {
+            const name = document.getElementById('name').value;
+            
+            const response = await fetch('/profile/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Profile updated successfully!');
+                location.reload();
+            } else {
+                alert('Failed to update profile.');
+            }
+        }
+
+        // Logout Function
+        function logout() {
+            window.location.href = '/logout';
+        }
+    </script>
+
+</body>
+</html>

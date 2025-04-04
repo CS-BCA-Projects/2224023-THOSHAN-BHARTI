@@ -1,93 +1,243 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playlist</title>
-   
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #ff69b4;
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .categories {
+            margin: 20px 0;
+        }
+
+        .categories button {
+            background-color: #ff69b4;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .categories button:hover {
+            transform: scale(1.1);
+        }
+
+        .playlist-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .box {
+            background-color: #1f1f1f;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+        }
+
+        .box img {
+            width: 250px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .box p {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .play-btn {
+            background-color: #ff69b4;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Audio Player Styling */
+        #audio-player {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff69b4;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+            width: 320px;
+        }
+
+        #musicPlayer {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating Audio Player */
+#custom-audio-player {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff69b4;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    box-shadow: 0px 4px 10px rgba(255, 105, 180, 0.6);
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#custom-audio-player.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#custom-audio-player button {
+    background: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#custom-audio-player button:hover {
+    transform: scale(1.1);
+}
+
+#currentSong {
+    font-weight: bold;
+}
+ /* Profile Icon Styles */
+ .profile-container {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .profile-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        min-width: 150px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        z-index: 100;
+        text-align: center;
+    }
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: black;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .show {
+        display: block;
+    }
+
+    </style>
 </head>
-
-<style>
-    body {
-    background-color: #121212;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-
-.navbar {
-    background-color: #ff69b4;
-    padding: 15px;
-}
-
-.navbar a {
-    color: #ffffff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: bold;
-}
-
-.categories {
-    margin: 20px 0;
-}
-
-.categories button {
-    background-color: #ff69b4;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 20px;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-.playlist-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
-
-.box {
-    background-color: #1f1f1f;
-    border-radius: 15px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
-    text-align: center;
-    overflow: hidden;
-}
-
-.box img {
-    width: 250px;
-    height: 150px;
-    border-radius: 15px;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-.box p {
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.play-btn {
-    background-color: #ff69b4;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-</style>
 <body>
+
     <div class="navbar">
         <a href="/">Home</a>
         <a href="/playlist">Playlist</a>
         <a href="/signup">Signup</a>
         <a href="/login">Login</a>
+        <a href="/forum">Forum</a>
+        
+<div class="profile-container">
+
+        <div class="profile-dropdown">
+            <img src="images/1144709.png" alt="Profile" class="profile-icon" id="profileIcon">
+            <div class="dropdown-content" id="profileDropdown">
+                <a href="/profile">My Profile</a>
+                <a href="/logout">Logout</a>
+                <a href="/admin">Dashboard</a>
+            </div>
+        </div>
+ 
+        
+
+</div>
     </div>
 
     <div class="categories">
@@ -99,66 +249,119 @@
 
     <div class="playlist-container">
         <div class="box">
-            <img src="/images/morning.jpg" alt="Focused" loading="lazy">
+            <img src="/images/morning.jpg" alt="Focused">
             <p>Focused</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('focus.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/sleep.jpg" alt="Cozy sleep" loading="lazy">
+            <img src="/images/sleep.jpg" alt="Cozy sleep">
             <p>Cozy Sleep</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('sleep.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/sea image.jpg" alt="Soothing" loading="lazy">
+            <img src="/images/sea image.jpg" alt="Soothing">
             <p>Soothing</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('soothing.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/image2.jpg" alt="Bright" loading="lazy">
+            <img src="/images/image2.jpg" alt="Bright">
             <p>Bright</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('bright.mp3')">Play</button>
+
         </div>
         <div class="box">
-            <img src="/images/rain.jpg" alt="Melancholic" loading="lazy">
+            <img src="/images/rain.jpg" alt="Melancholic">
             <p>Melancholic</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('rain.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/yoga.jpg" alt="Cheerful" loading="lazy">
+            <img src="/images/yoga.jpg" alt="Cheerful">
             <p>Cheerful</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('cheerful.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/piano.jpg" alt="Peaceful " loading="lazy">
-            <p>Peaceful </p>
-            <button class="play-btn">Play</button>
+            <img src="/images/piano.jpg" alt="Peaceful">
+            <p>Peaceful</p>
+            <button class="play-btn" onclick="playSong('peaceful.mp3')">Play</button>
         </div>
         <div class="box">
-            <img src="/images/soothingstrings.jpg" alt="Heartfelt" loading="lazy">
+            <img src="/images/soothingstrings.jpg" alt="Heartfelt">
             <p>Heartfelt</p>
-            <button class="play-btn">Play</button>
+            <button class="play-btn" onclick="playSong('heartfelt.mp3')">Play</button>
         </div>
     </div>
-    
-</body>
-//changement made
-<!-- <script>
-    async function fetchSongs(emotion) {
-    const response = await fetch(`/playlist?emotion=${emotion}`);
-    const songs = await response.json();
 
-    const songList = document.getElementById("song-list");
-    songList.innerHTML = ""; // Clear previous results
+ <!-- Floating Music Player -->
+<div id="custom-audio-player">
+    <button id="prevBtn">⏮</button>
+    <button id="playPauseBtn">▶</button>
+    <button id="nextBtn">⏭</button>
+    <span id="currentSong">No song playing</span>
+</div>
+<audio id="musicPlayer"></audio>
 
-    songs.forEach(song => {
-        const songItem = document.createElement("li");
-        songItem.textContent = song;
-        songList.appendChild(songItem);
-    });
+<script>
+    let songs = [
+    "focus.mp3",
+    "sleep.mp3",
+    "soothing.mp3",
+    "bright.mp3",
+    "rain.mp3",
+    "cheerful.mp3",
+    "peaceful.mp3",
+    "heartfelt.mp3"
+];
+
+let currentIndex = 0;
+let player = document.getElementById("musicPlayer");
+let playerContainer = document.getElementById("custom-audio-player");
+let playPauseBtn = document.getElementById("playPauseBtn");
+let prevBtn = document.getElementById("prevBtn");
+let nextBtn = document.getElementById("nextBtn");
+let currentSongDisplay = document.getElementById("currentSong");
+
+function playSong(songName) {
+    let fullPath = "/Songs/" + songName;
+    player.src = fullPath;
+    player.load();
+    player.play()
+        .then(() => {
+            playerContainer.classList.add("show");
+            playPauseBtn.innerHTML = "⏸"; // Change to pause button
+            currentSongDisplay.textContent = songName.replace(".mp3", ""); // Show song name
+        })
+        .catch(error => console.log("Playback error:", error));
 }
 
-</script> -->
+playPauseBtn.addEventListener("click", function () {
+    if (player.paused) {
+        player.play();
+        playPauseBtn.innerHTML = "⏸";
+    } else {
+        player.pause();
+        playPauseBtn.innerHTML = "▶";
+    }
+});
+
+prevBtn.addEventListener("click", function () {
+    currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+    playSong(songs[currentIndex]);
+});
+
+nextBtn.addEventListener("click", function () {
+    currentIndex = (currentIndex + 1) % songs.length;
+    playSong(songs[currentIndex]);
+});
+document.getElementById("profileIcon")?.addEventListener("click", function () {
+        document.getElementById("profileDropdown").classList.toggle("show");
+    });
+
+    window.addEventListener("click", function (event) {
+        if (!event.target.matches('.profile-icon')) {
+            document.getElementById("profileDropdown").classList.remove("show");
+        }
+    });
+</script>
+
+</body>
 </html>
-
-
-<!-- changes made to the code in play.js and <playlist class="ejs"></playlist> -->

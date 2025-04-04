@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Streaming Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
     <script>
@@ -19,32 +17,32 @@
                         darkBg: '#1a1a2e',
                         accent: '#e94560'
                     },
-                    borderRadius: {
-                        'button': '12px'
-                    }
+                    borderRadius: { 'button': '12px' }
                 }
             }
         }
     </script>
     <style>
         body { background-color: #1a1a2e; color: #fff; }
-        .gradient-bg {
-            background: linear-gradient(135deg, #1a1a2e 0%, #9B51E0 100%);
-        }
+        .gradient-bg { background: linear-gradient(135deg, #1a1a2e 0%, #9B51E0 100%); }
         h1, h3 { text-shadow: 2px 2px 8px #e94560; }
         .box img { border-radius: 12px; transition: transform 0.3s ease-in-out; }
         .box img:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.6); }
-        .animated-text {
-            animation: fadeIn 3s ease-in-out infinite alternate;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0.7; }
-            to { opacity: 1; }
+        .animated-text { animation: fadeIn 3s ease-in-out infinite alternate; }
+        @keyframes fadeIn { from { opacity: 0.7; } to { opacity: 1; } }
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(26, 26, 46, 0.9); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .profile-icon { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; position: fixed; top: 10px; right: 20px; }
+        .profile-icon:hover { transform: scale(1.1); }
+        
+        /* Reduce space between buttons */
+        .button-group {
+            display: flex;
+            gap: 10px; /* Reduces space between buttons */
         }
     </style>
 </head>
 <body class="min-h-screen">
-    <div class="gradient-bg min-h-screen">
+    <div class="gradient-bg ">
         <header class="bg-darkBg">
             <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
@@ -55,22 +53,23 @@
                     <a href="home" class="text-white hover:text-secondary">Home</a>
                     <a href="playlist" class="text-white hover:text-secondary">Discover</a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button class="px-6 py-2 text-white border border-secondary rounded-button hover:bg-secondary"><a href="login"> Login</a></button>
-                    <button class="px-6 py-2 text-white bg-secondary rounded-button hover:bg-opacity-90"><a href="signup">Sign up</a></button>
+                <!-- Button Group with reduced space between buttons -->
+                <div class="button-group">
+                    <button class="px-6 py-2 text-white border border-secondary rounded-button hover:bg-secondary"><a href="/login">Login</a></button>
+                    <button class="px-6 py-2 text-white bg-secondary rounded-button hover:bg-opacity-90"><a href="/signup">Sign up</a></button>
+                   
                 </div>
             </nav>
         </header>
-
         <main>
-            <section class="container mx-auto px-6 py-16 text-center">
+            <section class="container mx-auto px-6 py-16 text-center pt-24">
                 <h1 class="text-5xl font-bold text-white animated-text">"Where words fail, music speaks."</h1>
                 <p class="text-secondary text-lg mt-4">Experience the healing power of sound</p>
             </section>
 
             <section class="bg-darkBg py-20">
                 <div class="container mx-auto px-6">
-                    <div class="grid md:grid-cols-3 gap-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
                         <div class="text-center box">
                             <img src="/images/morning.jpg" alt="Morning Meditation" class="w-64 mx-auto">
                             <h3 class="text-2xl font-semibold text-white mt-4">Morning Meditation</h3>
@@ -87,333 +86,14 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-<!-- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Streaming Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#FF4D8D',
-                        secondary: '#00BFA6'
-                    },
-                    borderRadius: {
-                        'none': '0px',
-                        'sm': '4px',
-                        DEFAULT: '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                        'xl': '20px',
-                        '2xl': '24px',
-                        '3xl': '32px',
-                        'full': '9999px',
-                        'button': '8px'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        :where([class^="ri-"])::before { content: "\f3c2"; }
-        .gradient-bg {
-            background: linear-gradient(135deg, #FFE5E5 0%, #F0E6FF 100%);
-        }
-    </style>
-</head>
-<body class="min-h-screen">
-    <div class="gradient-bg min-h-screen">
-        <header class="bg-white">
-            <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <i class="ri-play-circle-line text-primary text-2xl"></i>
-                    <span class="font-['Pacifico'] text-2xl text-gray-800">Play</span>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="home" class="text-gray-600 hover:text-primary">Home</a>
-                    <a href="playlist" class="text-gray-600 hover:text-primary">Discover</a>
-                 
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <button class="px-6 py-2 text-gray-600 border border-gray-300 rounded-button hover:bg-gray-50"><a href="login" class="text-gray-600 hover:text-primary"> Login</a></button>
-                    <button class="px-6 py-2 text-white bg-primary rounded-button hover:bg-opacity-90"><a href="Signup" class="text-gray-600 hover:text-primary">Sign up</a></button>
-                </div>
-            </nav>
-        </header>
-
-        <main>
-            <section class="container mx-auto px-6 py-16">
-                <div class="flex flex-col lg:flex-row items-center justify-between">
-                    <div class="lg:w-1/2 mb-10 lg:mb-0">
-                        <h1 class="text-5xl font-bold text-gray-800 mb-6">Explore Limitless Music</h1>
-                        <p class="text-gray-600 text-lg mb-8">Explore the rich tapestry of musical genres, your adventure in sound starts here. Discover millions of songs, create your perfect playlist, and enjoy high-quality streaming.</p>
-                    </div>
-                    <div class="lg:w-1/2">
-                        <img src="https://public.readdy.ai/ai/img_res/1b4bfecb00253a8af758e715767e9053.jpg" alt="Music illustration" class="w-full">
-                    </div>
-                </div>
-            </section>
-
-            <section class="bg-white py-20">
-                <div class="container mx-auto px-6">
-                    <div class="grid md:grid-cols-3 gap-12">
-                        <div class="text-center">
-                            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                                <i class="ri-music-2-line text-4xl text-secondary"></i>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Hi-Fi Quality</h3>
-                            <p class="text-gray-600">Experience crystal-clear sound with our premium audio quality. Every note, every beat, delivered in pristine clarity.</p>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                                <i class="ri-advertisement-off-line text-4xl text-primary"></i>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">No Ads</h3>
-                            <p class="text-gray-600">Enjoy uninterrupted music streaming without any advertisements. Pure music, zero distractions.</p>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
-                                <i class="ri-download-cloud-line text-4xl text-[#FF9F43]"></i>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Easy Download</h3>
-                            <p class="text-gray-600">Download your favorite tracks for offline listening. Take your music anywhere, anytime.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            
-                        
-              
-            
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soundscape System</title>
-    <style>
-
-
-
-
-
-body {
-    background-color: #ffe6f2; /* Soft pink background */
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.container {
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 90%;
-    max-width: 600px;
-    margin-top: 40px;
-}
-
-h1, h2, h3 {
-    color: #ff66b2; /* Darker pink for titles */
-    text-align: center;
-}
-
-a {
-    color: #ff3399; 
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.navbar {
-    background-color: #ff99cc;
-    border-radius: 12px;
-    padding: 10px;
-    text-align: center;
-}
-
-.navbar a {
-    margin: 0 10px;
-    color: #fff;
-}
-
-.audio-section {
-    background-color: #fff5f8;
-    border: 2px solid #ffb3d9;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 10px 0;
-}
-
-.audio-section h3 {
-    margin-top: 0;
-    color: #ff3385;
-}
-
-button, .btn-primary {
-    background-color: #ff66b2;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-button:hover, .btn-primary:hover {
-    background-color: #ff3385;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ffb3d9;
-    border-radius: 12px;
-    margin-bottom: 10px;
-}
-
-        body {
-            background-color: #ffe4ec;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background-color: #ff69b4;
-            color: #fff;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-        .content {
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #ff69b4;
-        }
-        .playlist {
-            background-color: #fff;
-            border: 2px solid #ff69b4;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        audio {
-            width: 100%;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar">
-        <div class="logo">🎵 Soundscape System</div>
-        <div>
-            <a href="home">Home</a>
-            <a href="playlist">Playlists</a>
-            <a href="login">Login</a>
-            <a href="signup">Signup</a>
-            <a href="dashboard">Dashboard</a>
-        </div>
-    </div>
-
-    <div class="content">
-        <h1>Heal Your Mind with Music</h1>
-        <p>Experience the power of sound therapy for mental well-being.</p>
-        <h2>🎶 Explore Healing Playlists</h2>
-
-        <div class="playlist">
-            🌊 <b>Relaxing Waves</b>
-            <audio controls>
-                <source src="relaxing_waves.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="playlist">
-            🌲 <b>Forest Ambience</b>
-            <audio controls>
-                <source src="forest_ambience.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="playlist">
-            🧘‍♀️ <b>Deep Meditation</b>
-            <audio controls>
-                <source src="deep_meditation.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="playlist">
-            🎹 <b>Soft Piano</b>
-            <audio controls>
-                <source src="soft_piano.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-    </div>
-</body>
-</html> -->
-

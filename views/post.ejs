@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .post-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #222;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .comments-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        .comment {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .comment input {
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .comment button {
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="post-container">
+        <h2><%= post.title %></h2>
+        <p class="author">By: <%= post.author %> | <%= post.date %></p>
+        <div class="content">
+            <p><%= post.body %></p>
+        </div>
+
+        <div class="comments-section">
+            <h3>Comments:</h3>
+            <% comments.forEach(comment => { %>
+                <div class="comment">
+                    <strong><%= comment.author %>:</strong> <%= comment.content %>
+                </div>
+            <% }) %>
+
+            <form action="/forum/post/<%= post._id %>/comment" method="POST">
+                <input type="text" name="content" placeholder="Add a comment" required>
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

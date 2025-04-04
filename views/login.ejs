@@ -1,182 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background-color: #ffe6f2;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <style>
+    body {
+      background-color: #ffe6f2;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
 
-        .container {
-            background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            margin-top: 40px;
-            position: relative;
-        }
+    .container {
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      margin-top: 40px;
+      position: relative;
+    }
 
-        header {
-            background: #ff66b2;
-            padding: 15px;
-            color: white;
-            text-align: center;
-            border-radius: 20px 20px 0 0;
-            position: relative;
-        }
+    header {
+      background: #ff66b2;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      border-radius: 20px 20px 0 0;
+    }
 
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            margin-top: 0;
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            width: 100%;
-        }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin-top: 0;
+      display: flex;
+      justify-content: center;
+    }
 
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 0;
-            background-color: #ff66b2;
-            transition: background 0.3s ease;
-        }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 15px;
+      background-color: #ff66b2;
+      transition: background 0.3s ease;
+    }
 
-        .nav-links a:hover {
-            background-color: #ff1a75;
-        }
+    .nav-links a:hover {
+      background-color: #ff1a75;
+    }
 
-        .input-field {
-            width: 96%;
-            padding: 10px;
-            border: 2px solid #ffb3d9;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
+    .input-field {
+      width: 96%;
+      padding: 10px;
+      border: 2px solid #ffb3d9;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
 
-        .loginbtn {
-            background-color: #ff66b2;
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
-            width: 100%;
-        }
+    .loginbtn {
+      background-color: #ff66b2;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      width: 100%;
+    }
 
-        .loginbtn:hover {
-            background-color: #ff3385;
-        }
+    .loginbtn:hover {
+      background-color: #ff3385;
+    }
 
-        .signin {
-            background-color: #f1f1f1;
-            text-align: center;
-            padding: 10px;
-            border-radius: 0 0 20px 20px;
-            margin-top: 10px;
-        }
+    .signin {
+      text-align: center;
+      padding-top: 10px;
+    }
 
-        .signin a {
-            color: #ff66b2;
-            font-weight: bold;
-            text-decoration: none;
-        }
+    .signin a {
+      color: #ff66b2;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-        .signin a:hover {
-            text-decoration: underline;
-        }
+    .signin a:hover {
+      text-decoration: underline;
+    }
 
-        .logout-btn {
-            background-color: #ff66b2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background-color: #ff3385;
-        }
-    </style>
+    #message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <h1>Login</h1>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="home">Home</a></li>
-                    <li><a href="playlist">Playlists</a></li>
-                    <li><a href="login">Login</a></li>
-                    <li><a href="signup">Signup</a></li>
-                </ul>
-            </nav>
-        </header>
-        <form action="/login" method="POST" id="signupForm">
-            <div class="container">
-                <h1>Login</h1>
-                <hr>
-                <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Email" name="email" id="email" required
-                    class="input-field">
-                <div id="message"></div>
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" id="password" required class="input-field">
-                <hr>
-                <button type="submit" class="loginbtn">Login</button>
-                <p>New here? <a href="signup">Sign up here</a></p>
-            </div>
-        </form>
-    </div>
-</body>
-<script>
-    const signupForm = document.getElementById('signupForm');
-    const emailInput = document.getElementById('email');
+  <div class="container">
+    <header>
+      <h1>Login</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/playlist">Playlists</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/signup">Signup</a></li>
+          <li><a href="/forum">Forum</a></li>
+        </ul>
+      </nav>
+    </header>
+    <form id="loginForm">
+      <label for="username"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="username" id="username" required class="input-field"/>
+
+      <label for="password"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" id="password" required class="input-field"/>
+
+      <div id="message"></div>
+
+      <button type="submit" class="loginbtn">Login</button>
+      <div class="signin">
+        <p>New here? <a href="/signup">Sign up here</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const messageDiv = document.getElementById('message');
 
-    signupForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
 
+      try {
         const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
         });
 
         const result = await response.json();
 
-        if (response.ok) {
-            alert(result.message);
-            window.location.href = result.redirectUrl;
+        if (response.ok && result.success) {
+          alert(result.message || 'Login successful!');
+          window.location.href = result.redirectUrl || '/profile';
         } else {
-            messageDiv.textContent = result.error || 'Login failed!';
-            messageDiv.style.color = 'red';
+          messageDiv.textContent = result.message || 'Invalid credentials!';
         }
+      } catch (error) {
+        console.error('Login error:', error);
+        messageDiv.textContent = 'An error occurred. Please try again.';
+      }
     });
-
-</script>
-
+  </script>
+</body>
 </html>
