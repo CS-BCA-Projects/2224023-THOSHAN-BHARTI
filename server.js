@@ -145,13 +145,13 @@ app.use('/signup', signRoutes);
 app.use('/playlist', playRoutes);
 app.use('/forum', forumRoutes);
 app.use('/admin', adminRoutes);   // ✅ Added Admin Route
-app.use('/', profileRoutes); // ✅ Added Profile Route
+app.use('/profile', profileRoutes); // ✅ Added Profile Route
 
 // 🏠 Home Page Route
-app.get("/", (req, res) => {
-    res.render("home");
-});
-
+app.get('/', (req, res) => {
+    res.render('home');
+  });
+  
 // 🚪 Logout Route
 app.get("/logout", (req, res) => {
     req.session.destroy(() => {
