@@ -1,99 +1,135 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Streaming Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#9B51E0',
-                        secondary: '#FF4D8D',
-                        darkBg: '#1a1a2e',
-                        accent: '#e94560'
-                    },
-                    borderRadius: { 'button': '12px' }
-                }
-            }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music Streaming Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#9B51E0',
+            secondary: '#FF4D8D',
+            darkBg: '#1a1a2e',
+            accent: '#e94560'
+          },
+          borderRadius: { 'button': '12px' }
         }
-    </script>
-    <style>
-        body { background-color: #1a1a2e; color: #fff; }
-        .gradient-bg { background: linear-gradient(135deg, #1a1a2e 0%, #9B51E0 100%); }
-        h1, h3 { text-shadow: 2px 2px 8px #e94560; }
-        .box img { border-radius: 12px; transition: transform 0.3s ease-in-out; }
-        .box img:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.6); }
-        .animated-text { animation: fadeIn 3s ease-in-out infinite alternate; }
-        @keyframes fadeIn { from { opacity: 0.7; } to { opacity: 1; } }
-        .navbar { position: fixed; top: 0; width: 100%; background: rgba(26, 26, 46, 0.9); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .profile-icon { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; position: fixed; top: 10px; right: 20px; }
-        .profile-icon:hover { transform: scale(1.1); }
-        
-        /* Reduce space between buttons */
-        .button-group {
-            display: flex;
-            gap: 10px; /* Reduces space between buttons */
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #1a1a2e; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1a1a2e 0%, #9B51E0 100%); }
+    h1, h3 { text-shadow: 2px 2px 8px #e94560; }
+    .box img { border-radius: 12px; transition: transform 0.3s ease-in-out; }
+    .box img:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.6); }
+    .animated-text { animation: fadeIn 3s ease-in-out infinite alternate; }
+    @keyframes fadeIn { from { opacity: 0.7; } to { opacity: 1; } }
+    .navbar { position: fixed; top: 0; width: 100%; background: rgba(26, 26, 46, 0.9); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+    .profile-icon:hover { transform: scale(1.1); }
+    .dropdown-content a:hover { background-color: #f3f4f6; }
+  </style>
 </head>
 <body class="min-h-screen">
-    <div class="gradient-bg ">
-        <header class="bg-darkBg">
-            <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <i class="ri-play-circle-line text-primary text-2xl"></i>
-                    <span class="font-['Pacifico'] text-2xl text-white">Play</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="home" class="text-white hover:text-secondary">Home</a>
-                    <a href="playlist" class="text-white hover:text-secondary">Discover</a>
-                </div>
-                <!-- Button Group with reduced space between buttons -->
-                <div class="button-group">
-                    <button class="px-6 py-2 text-white border border-secondary rounded-button hover:bg-secondary"><a href="/login">Login</a></button>
-                    <button class="px-6 py-2 text-white bg-secondary rounded-button hover:bg-opacity-90"><a href="/signup">Sign up</a></button>
-                   
-                </div>
-            </nav>
-        </header>
-        <main>
-            <section class="container mx-auto px-6 py-16 text-center pt-24">
-                <h1 class="text-5xl font-bold text-white animated-text">"Where words fail, music speaks."</h1>
-                <p class="text-secondary text-lg mt-4">Experience the healing power of sound</p>
-            </section>
+  <div class="gradient-bg">
+    <!-- Navbar -->
+    <header class="bg-darkBg navbar">
+      <nav class="container mx-auto px-6 flex items-center justify-between">
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <i class="ri-play-circle-line text-primary text-2xl"></i>
+          <span class="font-['Pacifico'] text-2xl text-white">Play</span>
+        </div>
 
-            <section class="bg-darkBg py-20">
-                <div class="container mx-auto px-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-                        <div class="text-center box">
-                            <img src="/images/morning.jpg" alt="Morning Meditation" class="w-64 mx-auto">
-                            <h3 class="text-2xl font-semibold text-white mt-4">Morning Meditation</h3>
-                        </div>
-                        <div class="text-center box">
-                            <img src="/images/sleep.jpg" alt="Deep Sleep" class="w-64 mx-auto">
-                            <h3 class="text-2xl font-semibold text-white mt-4">Deep Sleep</h3>
-                        </div>
-                        <div class="text-center box">
-                            <img src="/images/soothingstrings.jpg" alt="Soothing Strings" class="w-64 mx-auto">
-                            <h3 class="text-2xl font-semibold text-white mt-4">Soothing Strings</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+        <!-- Nav Links -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/home" class="text-white hover:text-secondary">Home</a>
+          <a href="/playlist" class="text-white hover:text-secondary">Discover</a>
+        </div>
 
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
+        <!-- Profile or Login Buttons -->
+        <div class="relative z-50">
+          <% if (user) { %>
+            <!-- Profile Icon and Dropdown -->
+            <div class="relative inline-block text-left">
+              <img src="/images/1144709.png" alt="Profile" id="profileIcon"
+                   class="w-10 h-10 rounded-full cursor-pointer border-2 border-secondary transition-transform duration-300 hover:scale-110"/>
+
+              <div id="profileDropdown"
+                   class="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 transform scale-95 opacity-0 transition-all duration-300 pointer-events-none">
+                <a href="/profile" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">My Profile</a>
+                <a href="/logout" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Logout</a>
+                <a href="/admin" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Dashboard</a>
+              </div>
+            </div>
+          <% } else { %>
+            <!-- Login/Signup Buttons -->
+            <div class="flex gap-3">
+              <button class="px-4 py-2 text-white border border-secondary rounded-button hover:bg-secondary">
+                <a href="/login">Login</a>
+              </button>
+              <button class="px-4 py-2 text-white bg-secondary rounded-button hover:bg-opacity-90">
+                <a href="/signup">Sign up</a>
+              </button>
+            </div>
+          <% } %>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <section class="container mx-auto px-6 py-16 text-center pt-24">
+        <h1 class="text-5xl font-bold text-white animated-text">"Where words fail, music speaks."</h1>
+        <p class="text-secondary text-lg mt-4">Experience the healing power of sound</p>
+      </section>
+
+      <section class="bg-darkBg py-20">
+        <div class="container mx-auto px-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+            <div class="text-center box">
+              <img src="/images/morning.jpg" alt="Morning Meditation" class="w-64 mx-auto">
+              <h3 class="text-2xl font-semibold text-white mt-4">Morning Meditation</h3>
+            </div>
+            <div class="text-center box">
+              <img src="/images/sleep.jpg" alt="Deep Sleep" class="w-64 mx-auto">
+              <h3 class="text-2xl font-semibold text-white mt-4">Deep Sleep</h3>
+            </div>
+            <div class="text-center box">
+              <img src="/images/soothingstrings.jpg" alt="Soothing Strings" class="w-64 mx-auto">
+              <h3 class="text-2xl font-semibold text-white mt-4">Soothing Strings</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Script to Toggle Dropdown -->
+  <script>
+    const icon = document.getElementById("profileIcon");
+    const dropdown = document.getElementById("profileDropdown");
+
+    if (icon && dropdown) {
+      icon.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("pointer-events-none");
+        dropdown.classList.toggle("opacity-0");
+        dropdown.classList.toggle("scale-95");
+      });
+
+      window.addEventListener("click", () => {
+        if (!dropdown.classList.contains("pointer-events-none")) {
+          dropdown.classList.add("pointer-events-none", "opacity-0", "scale-95");
+        }
+      });
+    }
+  </script>
 </body>
 </html>
