@@ -92,12 +92,20 @@ const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 const sendEmail = require('./routes/email.service');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const forgetRoutes = require('./routes/forgot');
+const resetRoutes = require('./routes/reset');
+
+app.use('/forgot', forgetRoutes);
+app.use('/reset', resetRoutes);
 
 // Import Routes
 const authRoutes = require('./routes/auth');
 const signRoutes = require('./routes/sign');
 const playRoutes = require('./routes/play');
-const forumRoutes = require('./routes/forum');
+
 const adminRoutes = require('./routes/admin');   // ✅ Added Admin Route
 const profileRoutes = require('./routes/profile'); // ✅ Added Profile Route
 
@@ -105,9 +113,6 @@ const profileRoutes = require('./routes/profile'); // ✅ Added Profile Route
 connectDB();
 
 // 🔹 Middleware
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'your_secret_key',
@@ -143,7 +148,7 @@ app.use((req, res, next) => {
 app.use('/login', authRoutes);
 app.use('/signup', signRoutes);
 app.use('/playlist', playRoutes);
-app.use('/forum', forumRoutes);
+
 app.use('/admin', adminRoutes);   // ✅ Added Admin Route
 app.use('/profile', profileRoutes); // ✅ Added Profile Route
 

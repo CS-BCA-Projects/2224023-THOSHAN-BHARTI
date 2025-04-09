@@ -1,124 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile</title>
-  <link rel="stylesheet" href="/styles/style.css" />
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #181818;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .profile-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #282828;
+            border-radius: 5px;
+            width: 150px;
+            text-align: left;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            color: white;
+        }
+        .dropdown-menu a:hover {
+            background: #383838;
+        }
+        .profile-menu:hover .dropdown-menu {
+            display: block;
+        }
 
-    .profile-container {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      text-align: center;
-    }
+        /* Profile Container */
+        .profile-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .profile-container h2 {
+            margin-bottom: 20px;
+        }
+        .profile-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #333;
+            color: white;
+        }
+        .profile-container button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #e91e63;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .profile-container button:hover {
+            background: #c2185b;
+        }
+        .username {
+  margin-left: 8px;
+  font-size: 16px;
+  color: #ffdee9;
+}
 
-    h1 {
-      color: hotpink;
-      margin-bottom: 1rem;
-    }
-
-    .user-info {
-      margin-bottom: 2rem;
-      border: 2px solid hotpink;
-      border-radius: 12px;
-      padding: 1rem;
-      background-color: #111;
-    }
-
-    .user-info input {
-      padding: 0.5rem;
-      margin-top: 1rem;
-      border-radius: 8px;
-      border: 1px solid #444;
-    }
-
-    .track-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-    }
-
-    .track {
-      background-color: #111;
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid hotpink;
-      transition: 0.3s;
-    }
-
-    .track:hover {
-      transform: scale(1.05);
-      background-color: #222;
-    }
-
-    .track audio {
-      width: 100%;
-      margin-top: 0.5rem;
-    }
-
-    .logout-btn, .remove-btn, .edit-btn {
-      background: hotpink;
-      color: black;
-      padding: 0.5rem 1rem;
-      margin: 1rem;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-      transition: 0.3s;
-    }
-
-    .remove-btn {
-      background: crimson;
-      color: white;
-      margin-top: 1rem;
-    }
-
-    .remove-btn:hover, .logout-btn:hover, .edit-btn:hover {
-      background-color: deeppink;
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <div class="profile-container">
-    <h1>Your Profile</h1>
 
-    <div class="user-info">
-      <form action="/update-profile" method="POST">
-        <p><strong>Username:</strong> <input type="text" name="username" value="<%= user.username %>" required /></p>
-        <p><strong>Email:</strong> <%= user.email %></p>
-        <button type="submit" class="edit-btn">Save</button>
-      </form>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="/">Home</a>
+        <div class="profile-menu">
+            <img src="/images/1144709.png" alt="Profile" class="profile-icon">
+            <span class="username"><%= user.username %></span>
+            <div class="dropdown-menu">
+                <a href="/profile">My Profile</a>
+                <a href="/logout" onclick="logout()">Logout</a>
+            </div>
+        </div>
     </div>
 
-    <a href="/logout" class="logout-btn">Logout</a>
+    <!-- Profile Page -->
+    <div class="profile-container">
+        <h2>My Profile</h2>
+        <form id="profile-form">
+            <label>Username:</label>
+            <input type="text" id="username" value="<%= user.username %>">
 
-    <h2 style="color: hotpink;">Your Favorites</h2>
-    <div class="track-list">
-      <% if (favorites.length > 0) { %>
-        <% favorites.forEach(track => { %>
-          <div class="track">
-            <p><%= track.name %></p>
-            <audio controls>
-              <source src="/tracks/<%= track.filename %>" type="audio/mpeg" />
-            </audio>
-            <form action="/remove-favorite" method="POST">
-              <input type="hidden" name="trackName" value="<%= track.filename %>" />
-              <button type="submit" class="remove-btn">Remove</button>
-            </form>
-          </div>
-        <% }) %>
-      <% } else { %>
-        <p>No favorites yet!</p>
-      <% } %>
+            <label>Email:</label>
+            <input type="email" id="email" value="<%= user.email %>" disabled>
+
+            <label>Change Name:</label>
+            <input type="text" id="name" value="<%= user.name %>">
+
+            <button type="button" onclick="saveChanges()">Save Changes</button>
+            <button type="button" onclick="logout()">Logout</button>
+        </form>
     </div>
-  </div>
+    <h2>Your Favorites</h2>
+    <ul id="favorites-list"></ul>
+    <script>
+        // Save Profile Changes
+        async function saveChanges() {
+            const name = document.getElementById('name').value;
+            
+            const response = await fetch('/profile/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert('Profile updated successfully!');
+                location.reload();
+            } else {
+                alert('Failed to update profile.');
+            }
+        }
+        async function loadFavorites() {
+    const res = await fetch('/profile/favorites');
+    const favorites = await res.json();
+
+    const list = document.getElementById('favorites-list');
+    list.innerHTML = '';
+    favorites.forEach(fav => {
+      const li = document.createElement('li');
+      li.innerHTML = `${fav.title} - <audio controls src="/songs/${fav.filename}"></audio>`;
+      list.appendChild(li);
+    });
+  }
+
+  loadFavorites();
+        // Logout Function
+        function logout() {
+            window.location.href = '/logout';
+        }
+    </script>
+
 </body>
 </html>

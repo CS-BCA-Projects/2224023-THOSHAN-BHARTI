@@ -22,7 +22,12 @@ const userSchema = new mongoose.Schema({
     title: String,
     filename: String
 }],
-
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 
 module.exports = mongoose.model("User", userSchema);

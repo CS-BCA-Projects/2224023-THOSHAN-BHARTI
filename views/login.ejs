@@ -312,6 +312,10 @@
                 <hr>
                 <button type="submit" class="loginbtn">Login</button>
                 <p>New here? <a href="signup">Sign up here</a></p>
+                <p>
+                  <a href="/forgot" style="color: pink;">Forgot Password?</a>
+                </p>
+                
             </div>
         </form>
     </div>
@@ -328,11 +332,20 @@
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password ,username })
-        });
+        fetch('/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.redirectTo) {
+    window.location.href = data.redirectTo;
+  } else {
+    console.log(data.message);
+  }
+})
+.catch(err => console.error(err));
 
         const result = await response.json();
 

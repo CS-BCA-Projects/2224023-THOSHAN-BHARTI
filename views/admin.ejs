@@ -119,20 +119,21 @@
 <body>
     <div class="admin-container">
         <header class="navbar">
-            <header class="navbar">
-                <h1>Admin Dashboard</h1>
-                <nav>
-                    <a href="/">Home</a>
-                    <a href="/playlist">Playlists</a>
-                    <a href="/login">Login</a>
-                    <a href="/signup">Signup</a>
-                    
-                    <% if (user && user.isAdmin) { %>
+            <h1>Admin Dashboard</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/playlist">Playlists</a>
+                <% if (user) { %>
+                    <a href="/logout">Logout</a>
+                    <% if (user.isAdmin) { %>
                         <a href="/admin">Admin</a>
                     <% } %>
-                </nav>
-            </header>
-            
+                <% } else { %>
+                    <a href="/login">Login</a>
+                    <a href="/signup">Signup</a>
+                <% } %>
+            </nav>
+        </header>
 
         <section class="content-section">
             <h2>Manage Users</h2>
@@ -145,14 +146,13 @@
                 <input type="text" id="sound-title" placeholder="Sound Title" class="input-field" required>
                 <input type="text" id="sound-file" placeholder="Sound URL" class="input-field" required>
                 <button type="submit" class="btn-primary">Add Sound</button>
-                <button id="logoutButton" class="btn-primary">Logout</button>
             </form>
             <ul id="sound-list" class="sound-list"></ul>
         </section>
     </div>
 
     <script>
-        // Fetch and Display Users
+        // JS logic same as before
         async function fetchUsers() {
             const response = await fetch('/admin/users');
             const users = await response.json();
@@ -164,7 +164,6 @@
                 </li>`).join('');
         }
 
-        // Delete User
         async function deleteUser(userId) {
             await fetch(`/admin/delete-user/${userId}`, {
                 method: 'POST',
@@ -173,7 +172,6 @@
             fetchUsers();
         }
 
-        // Fetch and Display Sounds
         async function fetchSounds() {
             const response = await fetch('/admin/sounds');
             const sounds = await response.json();
@@ -182,11 +180,9 @@
                 <li>
                     <span>${sound.title}</span>
                     <a href="${sound.fileUrl}" target="_blank">Play</a>
-                </li>
-            `).join('');
+                </li>`).join('');
         }
 
-        // Add New Sound
         document.getElementById('add-sound-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const title = document.getElementById('sound-title').value;
@@ -199,15 +195,7 @@
             fetchSounds();
         });
 
-        // Logout Function
-        document.getElementById('logoutButton').addEventListener('click', async () => {
-            await fetch('/logout');
-            window.location.href = '/';
-        });
-
-        // Load Users & Sounds on Page Load
         fetchUsers();
         fetchSounds();
     </script>
 </body>
-</html>
