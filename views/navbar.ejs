@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Navbar - Serenity</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-gradient-to-b from-sky-100/40 to-transparent min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="w-full fixed top-0 left-0 z-50 bg-white/10 backdrop-blur-md shadow-sm px-6 py-3">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-2 text-white font-bold text-xl">
+        <i class="ph ph-music-note-simple text-green-400"></i>
+        <span class="font-[Pacifico] text-white">Serenity</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden md:flex gap-8 text-white font-medium">
+        <li><a href="/" class="hover:text-green-400">Home</a></li>
+        <li><a href="/playlist" class="hover:text-green-400">Music</a></li>
+        <li><a href="/relax" class="hover:text-green-400">Relax Activities</a></li>
+        <li><a href="/moodTracker" class="hover:text-green-400">Mood Tracker</a></li>
+      </ul>
+
+      <!-- Auth Section (Desktop) -->
+      <div class="hidden md:flex gap-4 text-white">
+        <% if (user) { %>
+          <a href="/profile" class="hover:text-green-400">Profile</a>
+          <a href="/logout" class="hover:text-green-400">Logout</a>
+        <% } else { %>
+          <a href="/login" class="flex items-center gap-1 px-3 py-1.5 hover:text-green-400 transition">
+            <i class="ph ph-sign-in"></i> Login
+          </a>
+          <a href="/signup" class="flex items-center gap-1 px-3 py-1.5 hover:text-green-400 transition bg-white/10 backdrop-blur rounded-lg">
+            <i class="ph ph-user-plus"></i> Signup
+          </a>
+        <% } %>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden mt-4 hidden flex-col gap-4 text-white font-medium px-4">
+      <a href="/" class="hover:text-green-400 block">Home</a>
+      <a href="/playlist" class="hover:text-green-400 block">Music</a>
+      <a href="/relax" class="hover:text-green-400 block">Relax Activities</a>
+      <a href="/moodTracker" class="hover:text-green-400 block">Mood Tracker</a>
+
+      <% if (user) { %>
+        <a href="/profile" class="hover:text-green-400 block">Profile</a>
+        <a href="/logout" class="hover:text-green-400 block">Logout</a>
+      <% } else { %>
+        <a href="/login" class="hover:text-green-400 block">Login</a>
+        <a href="/signup" class="hover:text-green-400 block">Signup</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <!-- Push content below navbar -->
+  <div class="pt-20"></div>
+
+  <!-- Page Content Here -->
+
+  <script>
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>

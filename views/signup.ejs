@@ -1,114 +1,54 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGN UP PAGE</title>
-
-  <STYLE>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up Page</title>
+  <style>
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
     }
 
-    /* Add padding to containers */
-    .container {
-      padding: 16px;
-    }
-
-    /* Full-width input fields */
-    input[type=text],
-    input[type=password] {
-      width: 100%;
-      padding: 15px;
-      margin: 5px 0 22px 0;
-      display: inline-block;
-      border: none;
-      background: #f1f1f1;
-    }
-
-    input[type=text]:focus,
-    input[type=password]:focus {
-      background-color: #ddd;
-      outline: none;
-    }
-
-    /* Overwrite default styles of hr */
-    hr {
-      border: 1px solid #f1f1f1;
-      margin-bottom: 25px;
-    }
-
-    /* Set a style for the submit/register button */
-    .registerbtn {
-      background-color: "677oe7";
-      color: white;
-      padding: 16px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      opacity: 0.9;
-    }
-
-    .registerbtn:hover {
-      opacity: 1;
-    }
-
-    /* Add a blue text color to links */
-    a {
-      color: rgb(43, 86, 129);
-    }
-
-
-    /* General Body Styling */
     body {
-      background-color: #ffe6f2;
-      font-family: 'Arial', sans-serif;
-      color: #333;
       margin: 0;
       padding: 0;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      background: url('https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
 
-    /* Container Styling */
     .container {
-      background-color: #ffffff;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       padding: 20px;
       width: 90%;
       max-width: 600px;
       margin-top: 40px;
+      backdrop-filter: blur(5px);
     }
 
-    /* Header Styling */
     header {
-      background: #ff66b2;
+      background: #66cc66;
       padding: 15px;
       color: white;
       text-align: center;
       border-radius: 20px 20px 0 0;
     }
 
-    /* Navigation Bar Styling */
-    .navbar {
-      background-color: #ff99cc;
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
     .nav-links {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 10px 0;
       display: flex;
       justify-content: center;
       gap: 15px;
+      flex-wrap: wrap;
     }
 
     .nav-links a {
@@ -116,50 +56,59 @@
       text-decoration: none;
       padding: 10px 20px;
       border-radius: 8px;
-      background-color: #ff66b2;
+      background-color: #66cc66;
       transition: background 0.3s ease;
     }
 
     .nav-links a:hover {
-      background-color: #ff3385;
+      background-color: #4CAF50;
     }
 
-    /* Signup Form Styling */
-    .input-field {
-      width: 96%;
-      padding: 10px;
-      border: 2px solid #ffb3d9;
-      border-radius: 12px;
-      margin-bottom: 10px;
+    input[type=text],
+    input[type=password],
+    input[type=number],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 20px 0;
+      border: 2px solid #b3ffb3;
+      border-radius: 10px;
+      background: #f9fff9;
     }
 
-    button,
-    .btn-primary {
-      background-color: #ff66b2;
-      color: #fff;
+    input[type=text]:focus,
+    input[type=password]:focus,
+    input[type=number]:focus,
+    textarea:focus {
+      background-color: #f0fff0;
+      outline: none;
+    }
+
+    .registerbtn {
+      background-color: #66cc66;
+      color: white;
+      padding: 16px 20px;
+      margin: 10px 0;
       border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      width: 100%;
+      border-radius: 20px;
+      font-size: 16px;
     }
 
-    button:hover,
-    .btn-primary:hover {
-      background-color: #ff3385;
+    .registerbtn:hover {
+      background-color: #4CAF50;
     }
 
-    /* Already have an account? */
     .signin {
       background-color: #f1f1f1;
       text-align: center;
       padding: 10px;
       border-radius: 0 0 20px 20px;
-      margin-top: 10px;
     }
 
     .signin a {
-      color: #ff66b2;
+      color: #4CAF50;
       font-weight: bold;
       text-decoration: none;
     }
@@ -167,13 +116,28 @@
     .signin a:hover {
       text-decoration: underline;
     }
-  </STYLE>
-</head>
 
+    label {
+      font-weight: bold;
+    }
+
+    h2 {
+      margin-top: 15px;
+      color: #4e944f;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #c8e6c9;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
 <body>
   <div class="container">
     <header>
-      <h1>Sign up</h1>
+      <h1>Sign Up</h1>
       <nav>
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
@@ -185,354 +149,78 @@
       </nav>
     </header>
 
-    <div class="menu-toggle">&#9776;</div>
-
     <form action="/signup" method="POST" id="signupForm">
-      <div class="container">
-        <h1>Register</h1>
-        <hr>
+      <h2>Create Your Account</h2>
+      <hr>
 
-        <label>Username:</label>
-        <input type="text" name="username"  placeholder="Enter username"  required>
-    
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" id="email" required>
+      <label>Username:</label>
+      <input type="text" name="username" placeholder="Enter username" required>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" id="psw" required>
+      <label>Email:</label>
+      <input type="text" name="email" placeholder="Enter email" required>
 
-        <label for="psw-repeat"><b>Confirm Password</b></label>
-        <input type="password" placeholder="Confirm Password" name="cnfPassword" id="psw-repeat" required>
-        
-        <!-- Favorite Genre Dropdown -->
-        <!-- <label for="favoriteGenre"><b>Favorite Genre</b></label>
-        <select name="favoriteGenre" id="favoriteGenre" required>
-          <option value="">Select a genre</option>
-          <option value="Calm">Calm</option>
-          <option value="Cheerful">Cheerful</option>
-          <option value="Relaxing">Relaxing</option>
-          <option value="Energetic">Energetic</option>
-          <!-- Add more genres as per your requirements -->
-        </select>
-        
-        
-        <!-- <hr>
-        <button type="submit" class="registerbtn">Register</button>
-        <p>Already Registered? <a href="login" class="login">LOGIN</a></p>
-      </div>
+      <label>Password:</label>
+      <input type="password" name="password" placeholder="Enter password" required>
+
+      <label>Confirm Password:</label>
+      <input type="password" name="cnfPassword" placeholder="Confirm password" required>
+
+      <label>Age:</label>
+      <input type="number" name="age" placeholder="Enter your age" min="1" required>
+
+      <label>Emotional Issue:</label>
+      <textarea name="emotionalIssue" rows="3" placeholder="Briefly describe what you're going through" required></textarea>
+
+      <button type="submit" class="registerbtn">Register</button>
     </form>
 
+    <div class="signin">
+      <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
   </div>
 
   <script>
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
 
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
+      if (!data.username || !data.email || !data.password || !data.cnfPassword || !data.age || !data.emotionalIssue) {
+        alert('All fields are required!');
+        return;
+      }
 
-        console.log("Signup Data:", data);
+      if (data.password !== data.cnfPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
 
-        if (!data.username || !data.email || !data.password || !data.cnfPassword) {
-            alert('All fields are required!');
-            return;
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: data.username,
+            email: data.email,
+            password: data.password,
+            age: data.age,
+            emotionalIssue: data.emotionalIssue
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          window.location.href = result.redirectUrl;
+        } else {
+          alert(result.message);
         }
-
-        if (data.password !== data.cnfPassword) {
-            alert('Passwords do not match!');
-            return; // Prevent submission if passwords don't match
-        }
-
-        try {
-            const response = await fetch('/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: data.username, // Ensure username is included
-                    email: data.email,
-                    password: data.password
-                })
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                alert(result.message);
-                console.log("Redirecting to:", result.redirectUrl);
-                window.location.href = result.redirectUrl; // Redirect after successful signup
-            } else {
-                alert(result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An unexpected error occurred.');
-        }
+      } catch (err) {
+        console.error('Signup Error:', err);
+        alert('Something went wrong!');
+      }
     });
-</script> -->
-<!-- 
+  </script>
 </body>
-
-</html> --> --> -->
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIGN PAGE</title>
-  <link rel="stylesheet" href="style.css">
-  <STYLE>
-    * {
-      box-sizing: border-box
-    }
-
-    /* Add padding to containers */
-    .container {
-      padding: 16px;
-    }
-
-    /* Full-width input fields */
-    input[type=text],
-    input[type=password] {
-      width: 100%;
-      padding: 15px;
-      margin: 5px 0 22px 0;
-      display: inline-block;
-      border: none;
-      background: #f1f1f1;
-    }
-
-    input[type=text]:focus,
-    input[type=password]:focus {
-      background-color: #ddd;
-      outline: none;
-    }
-
-    /* Overwrite default styles of hr */
-    hr {
-      border: 1px solid #f1f1f1;
-      margin-bottom: 25px;
-    }
-
-    /* Set a style for the submit/register button */
-    .registerbtn {
-      background-color: "677oe7";
-      color: white;
-      padding: 16px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      opacity: 0.9;
-    }
-
-    .registerbtn:hover {
-      opacity: 1;
-    }
-
-    /* Add a blue text color to links */
-    a {
-      color: rgb(43, 86, 129);
-    }
-
-
-    /* General Body Styling */
-    body {
-      background-color: #ffe6f2;
-      font-family: 'Arial', sans-serif;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* Container Styling */
-    .container {
-      background-color: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      width: 90%;
-      max-width: 600px;
-      margin-top: 40px;
-    }
-
-    /* Header Styling */
-    header {
-      background: #ff66b2;
-      padding: 15px;
-      color: white;
-      text-align: center;
-      border-radius: 20px 20px 0 0;
-    }
-
-    /* Navigation Bar Styling */
-    .navbar {
-      background-color: #ff99cc;
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .nav-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      background-color: #ff66b2;
-      transition: background 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      background-color: #ff3385;
-    }
-
-    /* Signup Form Styling */
-    .input-field {
-      width: 96%;
-      padding: 10px;
-      border: 2px solid #ffb3d9;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-
-    button,
-    .btn-primary {
-      background-color: #ff66b2;
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover,
-    .btn-primary:hover {
-      background-color: #ff3385;
-    }
-
-    /* Already have an account? */
-    .signin {
-      background-color: #f1f1f1;
-      text-align: center;
-      padding: 10px;
-      border-radius: 0 0 20px 20px;
-      margin-top: 10px;
-    }
-
-    .signin a {
-      color: #ff66b2;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .signin a:hover {
-      text-decoration: underline;
-    }
-  </STYLE>
-</head>
-
-<body>
-  <div class="container">
-    <header>
-      <h1>Sign up</h1>
-      <nav>
-
-        <ul class="nav-links">
-          <li><a href="home">Home</a></li>
-          <li><a href="playlist">Playlists</a></li>
-          <li><a href="login">Login</a></li>
-          <li><a href="signup">signup</a></li>
-
-        </ul>
-      </nav>
-    </header>
-
-    <div class="menu-toggle">&#9776;</div>
-
-    <form action="/signup" method="POST" id="signupForm">
-      <div class="container">
-        <h1>Register</h1>
-
-        <hr>
-        <label for="Username"><b>Username</b></label>
-        <input type="text" placeholder="Username" name="username" id="username" required>
-
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" id="email" required>
-
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" id="psw" required>
-
-        
-        <hr>
-        <button type="submit" class="registerbtn">Register</button>
-        <p> Already Registeed ? <a href="login" class="login">LOGIN</a></p>
-      </div>
-    </form>
-
-</body>
-<script>
-  document.getElementById('signupForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-
-    // console.log(data)
-    // if (data.password !== data.cnfPassword) {
-    //   alert('Passwords do not match!');
-    //   return; // Prevent submission if passwords don't match
-    // }
-
-    try {
-      const response = await fetch('/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-                    username: data.username, // Ensure username is included
-                    email: data.email,
-                    password: data.password
-                })
-            });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert(result.message);
-        console.log("Redirecting to:", result.redirectUrl); // Confirm URL
-        window.location.href = result.redirectUrl;
-      }
-      else {
-        alert(result.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An unexpected error occurred.');
-    }
-  });
-
-</script>
-
 </html>
-
-
-
-
-
-
-

@@ -1,27 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const Song = require('../models/Songs.js'); // MongoDB model
+const Playlist = require('../models/playlist');
 
+router.get('/:id', async (req, res) => {
+  try {
+    const playlist = await Playlist.findById(req.params.id);
+    if (!playlist) return res.status(404).send("Playlist not found");
 
- router.get ('/',(req ,res)=>{
-    res.render('playlist');  // Ensure 'login.ejs' is inside your `/views` folder
+    res.render('playlist-view', { playlist });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
 });
 
 
-// Route to fetch and display playlist songs
-router.get('/playlist', async (req, res) => {
-    const genreFilter = req.query.genre;  // Get genre from query params
 
-    try {
-        const SongData = genreFilter 
-            ? await Song.find({ genre: genreFilter })  // Filter by genre
-            : await Song.find();  // Fetch all songs
-
-        return res.render('playlist', { SongData, genreFilter }); // Pass data to frontend
-    } catch (err) {
-        console.error('Error fetching music data:', err);
-        return res.status(500).send('Server Error');
-    }
-});
 
 module.exports = router;
