@@ -1,539 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mood Tracker - Serenity</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4CAF50',
-                        secondary: '#8E9AAF'
-                    },
-                    borderRadius: {
-                        'none': '0px',
-                        'sm': '4px',
-                        DEFAULT: '8px',
-                        'md': '12px',
-                        'lg': '16px',
-                        'xl': '20px',
-                        '2xl': '24px',
-                        '3xl': '32px',
-                        'full': '9999px',
-                        'button': '8px'
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Tracker - Serenity</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4CAF50',
+            secondary: '#8E9AAF'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
         }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
-    <style>
-        :where([class^="ri-"])::before {
-            content: "\f3c2";
-        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+    .mood-card {
+      transition: all 0.3s ease;
+    }
+    .mood-card:hover {
+      transform: translateY(-2px);
+    }
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    input[type="radio"]+label {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    input[type="radio"]:checked+label {
+      border-color: #4CAF50;
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+   
+  @keyframes grow {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
-        }
-
-        .mood-card {
-            transition: all 0.3s ease;
-        }
-
-        .mood-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .calendar-day {
-            aspect-ratio: 1/1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        input[type="radio"]+label {
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        input[type="radio"]:checked+label {
-            border-color: #4CAF50;
-            background-color: rgba(76, 175, 80, 0.1);
-        }
-
-        .error {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #ffebee;
-            border-radius: 8px;
-            color: #c62828;
-        }
-
-        .success {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e8f5e9;
-            border-radius: 8px;
-            color: #2e7d32;
-        }
-    </style>
+  .animate-grow {
+    animation: grow 0.6s ease-out forwards;
+  }
+</style>
 </head>
 <body class="min-h-screen flex flex-col items-center bg-green-100 font-sans">
   <%- include('navbar') %>
   <main class="container">
-        <section class="text-center mb-12">
-            <h1 class="text-5xl font-serif text-gray-700 mb-4">Mood Tracker</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">Track how you're feeling and get personalized AI insights</p>
-        </section>
+    <section class="text-center mb-12">
+      <h1 class="text-5xl font-serif text-gray-700 mb-4">Mood Tracker</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">Select your mood to receive an uplifting quote</p>
+    </section>
 
-        <section class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8 mb-12">
-            <h2 class="text-2xl font-serif text-gray-800 mb-8 text-center">How are you feeling today?</h2>
-            <div class="text-center mb-6 text-gray-600">
-                Our AI will analyze your mood and provide personalized insights
+    <section class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8 mb-12">
+      <h2 class="text-2xl font-serif text-gray-800 mb-8 text-center">How are you feeling today?</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="mood-card">
+          <input type="radio" name="mood" id="happy" value="happy">
+          <label for="happy" class="flex flex-col items-center justify-center p-4 border-2 border-yellow-200 rounded-full bg-yellow-50 hover:bg-yellow-100 transition-colors">
+            <div class="w-10 h-10 flex items-center justify-center text-yellow-500 mb-2">
+              <i class="ri-sun-line ri-xl"></i>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div class="mood-card">
-                    <input type="radio" name="mood" id="happy" value="happy">
-                    <label for="happy"
-                        class="flex flex-col items-center justify-center p-4 border-2 border-yellow-200 rounded-full bg-yellow-50 hover:bg-yellow-100 transition-colors">
-                        <div class="w-10 h-10 flex items-center justify-center text-yellow-500 mb-2">
-                            <i class="ri-sun-line ri-xl"></i>
-                        </div>
-                        <span class="text-gray-700">Happy</span>
-                    </label>
-                </div>
-                <div class="mood-card">
-                    <input type="radio" name="mood" id="relaxed" value="relaxed">
-                    <label for="relaxed"
-                        class="flex flex-col items-center justify-center p-4 border-2 border-green-200 rounded-full bg-green-50 hover:bg-green-100 transition-colors">
-                        <div class="w-10 h-10 flex items-center justify-center text-green-500 mb-2">
-                            <i class="ri-mental-health-line ri-xl"></i>
-                        </div>
-                        <span class="text-gray-700">Relaxed</span>
-                    </label>
-                </div>
-                <div class="mood-card">
-                    <input type="radio" name="mood" id="energetic" value="energetic">
-                    <label for="energetic"
-                        class="flex flex-col items-center justify-center p-4 border-2 border-red-200 rounded-full bg-red-50 hover:bg-red-100 transition-colors">
-                        <div class="w-10 h-10 flex items-center justify-center text-red-500 mb-2">
-                            <i class="ri-flashlight-line ri-xl"></i>
-                        </div>
-                        <span class="text-gray-700">Energetic</span>
-                    </label>
-                </div>
-                <div class="mood-card">
-                    <input type="radio" name="mood" id="melancholy" value="melancholy">
-                    <label for="melancholy"
-                        class="flex flex-col items-center justify-center p-4 border-2 border-blue-200 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors">
-                        <div class="w-10 h-10 flex items-center justify-center text-blue-500 mb-2">
-                            <i class="ri-moon-clear-line ri-xl"></i>
-                        </div>
-                        <span class="text-gray-700">Melancholy</span>
-                    </label>
-                </div>
+            <span class="text-gray-700">Happy</span>
+          </label>
+        </div>
+        <div class="mood-card">
+          <input type="radio" name="mood" id="relaxed" value="relaxed">
+          <label for="relaxed" class="flex flex-col items-center justify-center p-4 border-2 border-green-200 rounded-full bg-green-50 hover:bg-green-100 transition-colors">
+            <div class="w-10 h-10 flex items-center justify-center text-green-500 mb-2">
+              <i class="ri-mental-health-line ri-xl"></i>
             </div>
-        </section>
-
-        <section class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8 mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center gap-3">
-                    <h2 class="text-2xl font-serif text-gray-800">Your Mood History</h2>
-                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm flex items-center gap-1">
-                        <i class="ri-brain-line"></i>
-                        <span>AI Analysis</span>
-                    </div>
-                </div>
-                <div class="flex bg-gray-100 rounded-full p-1">
-                    <button
-                        class="bg-primary text-white px-4 py-1 rounded-full text-sm !rounded-button whitespace-nowrap">Weekly</button>
-                    <button
-                        class="text-gray-600 px-4 py-1 rounded-full text-sm !rounded-button whitespace-nowrap">Monthly</button>
-                </div>
+            <span class="text-gray-700">Relaxed</span>
+          </label>
+        </div>
+        <div class="mood-card">
+          <input type="radio" name="mood" id="energetic" value="energetic">
+          <label for="energetic" class="flex flex-col items-center justify-center p-4 border-2 border-red-200 rounded-full bg-red-50 hover:bg-red-100 transition-colors">
+            <div class="w-10 h-10 flex items-center justify-center text-red-500 mb-2">
+              <i class="ri-flashlight-line ri-xl"></i>
             </div>
-            <div class="flex justify-between items-center mb-4">
-                <button
-                    class="flex items-center text-gray-600 hover:text-primary transition-colors !rounded-button whitespace-nowrap">
-                    <i class="ri-arrow-left-s-line ri-lg"></i>
-                    <span>Previous Week</span>
-                </button>
-                <div class="text-gray-700 font-medium">April 10 - 16, 2025</div>
-                <button
-                    class="flex items-center text-gray-600 hover:text-primary transition-colors !rounded-button whitespace-nowrap">
-                    <span>Next Week</span>
-                    <i class="ri-arrow-right-s-line ri-lg"></i>
-                </button>
+            <span class="text-gray-700">Energetic</span>
+          </label>
+        </div>
+        <div class="mood-card">
+          <input type="radio" name="mood" id="melancholy" value="melancholy">
+          <label for="melancholy" class="flex flex-col items-center justify-center p-4 border-2 border-blue-200 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors">
+            <div class="w-10 h-10 flex items-center justify-center text-blue-500 mb-2">
+              <i class="ri-moon-clear-line ri-xl"></i>
             </div>
-            <div class="grid grid-cols-7 gap-2">
-                <% 
-                  const moodMap = {}; 
-                  moodHistory.forEach(entry => { 
-                    const d = new Date(entry.date);
-                    const key = d.getDate();
-                    moodMap[key] = entry;
-                  });
-              
-                  const today = new Date();
-                  const year = today.getFullYear();
-                  const month = today.getMonth();
-                  const daysInMonth = new Date(year, month + 1, 0).getDate();
-                  const firstDay = new Date(year, month, 1).getDay();
-              
-                  const emojis = {
-                    happy: '😊',
-                    relaxed: '😌',
-                    energetic: '😎',
-                    melancholy: '😔'
-                  };
-                  const bgColor = {
-                    happy: 'bg-yellow-200',
-                    relaxed: 'bg-green-200',
-                    energetic: 'bg-red-200',
-                    melancholy: 'bg-blue-200'
-                  };
-                %>
-              
-                <% ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(day => { %>
-                  <div class="text-center text-gray-600 text-sm mb-2"><%= day %></div>
-                <% }) %>
-              
-                <% for (let i = 0; i < firstDay; i++) { %>
-                  <div class="calendar-day bg-gray-50 rounded text-center py-4 opacity-50"></div>
-                <% } %>
-              
-                <% for (let day = 1; day <= daysInMonth; day++) {
-                  const entry = moodMap[day];
-                  const mood = entry?.mood;
-                  const emoji = emojis[mood] || '';
-                  const bg = bgColor[mood] || 'bg-gray-50';
-                %>
-                  <div class="calendar-day <%= bg %> rounded text-center py-4">
-                    <span class="text-gray-700"><%= day %></span>
-                    <% if (emoji) { %>
-                      <div class="mt-1"><%= emoji %></div>
-                    <% } %>
-                  </div>
-                <% } %>
-              </div>
-              
-        </section>
-
-        <section class="max-w-3xl mx-auto">
-            <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-                <h2 class="text-2xl font-serif text-gray-800 mb-6">Recent Entries</h2>
-                <div class="border-b border-gray-100 pb-4 mb-4">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-start space-x-4">
-                            <div
-                                class="w-10 h-10 flex items-center justify-center bg-yellow-100 rounded-full text-yellow-500">
-                                <span class="text-xl">😊</span>
-                            </div>
-                            <div>
-                                <div class="flex items-center">
-                                    <h3 class="font-medium text-gray-800">Happy</h3>
-                                    <span class="text-gray-500 text-sm ml-2">• Apr 16, 2025</span>
-                                </div>
-                                <p class="text-gray-600 mt-1">Feeling great today!</p>
-                            </div>
-                        </div>
-                        <div class="w-8 h-8 flex items-center justify-center text-primary">
-                            <i class="ri-brain-line"></i>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-start space-x-4">
-                            <div
-                                class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full text-green-500">
-                                <span class="text-xl">😌</span>
-                            </div>
-                            <div>
-                                <div class="flex items-center">
-                                    <h3 class="font-medium text-gray-800">Relaxed</h3>
-                                    <span class="text-gray-500 text-sm ml-2">• Apr 14, 2025</span>
-                                </div>
-                                <p class="text-gray-600 mt-1">Had a peaceful meditation session</p>
-                            </div>
-                        </div>
-                        <div class="w-8 h-8 flex items-center justify-center text-primary">
-                            <i class="ri-brain-line"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-serif text-gray-800">AI Insights</h2>
-                <div class="text-sm text-gray-500">Updated dynamically</div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-gray-50 rounded-lg p-6">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full text-blue-600">
-                            <i class="ri-psychology-line"></i>
-                        </div>
-                        <h3 class="font-medium text-gray-800">Mood Pattern Analysis</h3>
-                    </div>
-                    <ul class="space-y-3 text-gray-600 pattern-analysis">
-                        <li class="flex items-start gap-2">
-                            <i class="ri-checkbox-circle-line text-primary mt-1"></i>
-                            <span>Select a mood to see insights</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="bg-gray-50 rounded-lg p-6">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div
-                            class="w-8 h-8 flex items-center justify-center bg-purple-100 rounded-full text-purple-600">
-                            <i class="ri-lightbulb-line"></i>
-                        </div>
-                        <h3 class="font-medium text-gray-800">AI Recommendations</h3>
-                    </div>
-                    <ul class="space-y-3 text-gray-600 recommendations">
-                        <li class="flex items-start gap-2">
-                            <i class="ri-star-line text-yellow-500 mt-1"></i>
-                            <span>Select a mood to see recommendations</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-span-full bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full text-green-600">
-                            <i class="ri-ai-generate"></i>
-                        </div>
-                        <h3 class="font-medium text-gray-800">AI Mood Prediction</h3>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="text-gray-600 mood-prediction">
-                            <p>Select a mood to see a prediction</p>
-                        </div>
-                        <div class="text-sm text-gray-500 confidence">
-                            <div class="flex items-center gap-1">
-                                <i class="ri-line-chart-line"></i>
-                                <span>0% confidence</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
+            <span class="text-gray-700">Melancholy</span>
+          </label>
+        </div>
+      </div>
+    </section>
+    </div>
+    <section class="max-w-2xl mx-auto my-8 bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Talk to Your Emotional Companion</h2>
+      <div id="chatWindow" class="bg-gray-50 p-4 h-80 overflow-y-auto rounded border border-gray-200 mb-4 space-y-4"></div>
+      <div class="flex items-center gap-3">
+        <input id="chatInput" type="text" placeholder="Share your thoughts..." class="flex-1 px-4 py-2 border rounded-md" />
+        <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded-md">Send</button>
+      </div>
+    </section>
+    <section id="moodGarden" class="max-w-2xl mx-auto bg-white mt-6 p-4 rounded-xl shadow text-center">
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">Your Mood Garden</h2>
+      <button id="clearGarden" class="mb-4 px-4 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded">🗑️ Clear Garden</button>
+      <div id="gardenPlot" class="grid grid-cols-4 gap-4 p-4 min-h-[100px] bg-green-50 rounded">
+        <!-- Mood icons with dates will appear here -->
+      </div>
+    </section>
+   <!-- Perfectly Centered & Contained Quote Card -->
+<!-- Clean Centered Square-like Quote Card -->
+<div id="quoteCard"
+     class="hidden fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+  <div class="bg-yellow-100 text-yellow-900 px-8 py-8 rounded-6xl shadow-6xl
+              text-center text-base animate-fadeIn font-semibold max-w-xs w-full max-h-50
+              overflow-hidden pointer-events-auto flex items-center justify-center">
+    <!-- Quote text will go here via JS -->
+  </div>
+</div>
+    <style>
+    @keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.95); }
+  10% { opacity: 1; transform: scale(1); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.95); }
+}
+.animate-fadeIn {
+  animation: fadeInOut 3s ease-in-out;
+}
+    </style>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const moodCards = document.querySelectorAll('.mood-card input');
-          const moodSection = document.querySelector('section:nth-child(2)');
-          let confirmationDiv = null;
-          let notesTextarea = null;
-          let saveButton = null;
-      
-          function createConfirmationElements(mood) {
-            if (confirmationDiv) confirmationDiv.remove();
-      
-            const aiAnalyzing = document.createElement('div');
-            aiAnalyzing.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50 flex items-center gap-3';
-            aiAnalyzing.innerHTML = `
-              <div class="w-8 h-8 flex items-center justify-center text-primary animate-spin">
-                <i class="ri-loader-4-line ri-2x"></i>
-              </div>
-              <div>
-                <div class="font-medium text-gray-800">AI is analyzing your mood...</div>
-                <div class="text-sm text-gray-500">This will take a moment</div>
-              </div>
-            `;
-            document.body.appendChild(aiAnalyzing);
-      
-            setTimeout(() => {
-              aiAnalyzing.remove();
-      
-              confirmationDiv = document.createElement('div');
-              confirmationDiv.className = `mt-8 p-6 ${mood === 'happy' ? 'bg-yellow-50' : mood === 'relaxed' ? 'bg-green-50' : mood === 'energetic' ? 'bg-red-50' : 'bg-blue-50'} rounded-lg`;
-              confirmationDiv.innerHTML = `
-                <div class="text-gray-800 mb-4">You're feeling ${mood} today! Would you like to add any notes?</div>
-                <textarea class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary resize-none" rows="3" placeholder="Add your thoughts here..."></textarea>
-                <button class="mt-4 bg-primary text-white px-6 py-2 rounded-button hover:bg-opacity-90 transition-colors">Save Mood</button>
-              `;
-              moodSection.appendChild(confirmationDiv);
-      
-              notesTextarea = confirmationDiv.querySelector('textarea');
-              saveButton = confirmationDiv.querySelector('button');
-      
-              // Fetch AI Insights
-              fetch('/moodTracker/ai-insights', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-                },
-                body: JSON.stringify({ mood })
-              })
-                .then(response => {
-                  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}, text: ${response.statusText}`);
-                  return response.json();
-                })
-                .then(data => {
-                  const patternList = document.querySelector('.pattern-analysis');
-                  patternList.innerHTML = data.patternAnalysis.map(item => `
-                    <li class="flex items-start gap-2">
-                      <i class="ri-checkbox-circle-line text-primary mt-1"></i>
-                      <span>${item}</span>
-                    </li>
-                  `).join('') || `<li><span>No insights available</span></li>`;
-      
-                  const recommendationList = document.querySelector('.recommendations');
-                  recommendationList.innerHTML = data.recommendations.map(item => `
-                    <li class="flex items-start gap-2">
-                      <i class="ri-star-line text-yellow-500 mt-1"></i>
-                      <span>${item}</span>
-                    </li>
-                  `).join('') || `<li><span>No recommendations available</span></li>`;
-      
-                  const predictionDiv = document.querySelector('.mood-prediction');
-                  const confidenceDiv = document.querySelector('.confidence');
-                  const predictionText = data.moodPrediction || "No prediction available";
-                  const confidence = data.moodPrediction?.split(' ').pop() || "0%";
-      
-                  predictionDiv.innerHTML = `
-                    <p>Based on your patterns, tomorrow you're likely to feel:</p>
-                    <div class="flex items-center gap-2 mt-2">
-                      <span class="text-2xl">${mood === 'happy' ? '😊' : mood === 'relaxed' ? '😌' : mood === 'energetic' ? '😎' : '😔'}</span>
-                      <span class="font-medium text-primary">${predictionText.split(' ').slice(0, -2).join(' ')}</span>
-                    </div>`;
-                  confidenceDiv.innerHTML = `
-                    <div class="flex items-center gap-1">
-                      <i class="ri-line-chart-line"></i>
-                      <span>${confidence}</span>
-                    </div>`;
-                })
-                .catch(error => {
-                  console.error("AI error:", error.message);
-                });
-      
-              // Save Mood Listener (with login check)
-              saveButton.addEventListener('click', async function () {
-                const notes = notesTextarea.value.trim();
-      
-                // 🔐 Check login status before saving mood
-                const authCheck = await fetch('/checkAuth', {
-                  method: 'GET',
-                  credentials: 'include'
-                });
-                const authData = await authCheck.json();
-      
-                if (!authData.success) {
-                  const errorDiv = document.createElement('div');
-                  errorDiv.className = 'error mt-6 p-6';
-                  errorDiv.innerHTML = `
-  ⚠️ Please <a href="/login" class="text-primary underline hover:text-primary/80 transition-colors">login</a> to save your mood.
-`;
-                  moodSection.appendChild(errorDiv);
-                  setTimeout(() => errorDiv.remove(), 3000);
-                  return;
-                }
-      
-                fetch('/moodTracker/mood-tracker', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  credentials: 'include',
-                  body: JSON.stringify({ mood, notes })
-                })
-                  .then(response => {
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    return response.json();
-                  })
-                  .then(data => {
-                    if (!data.success) throw new Error('Failed to save mood');
-      
-                    const formattedDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                    const recentEntriesSection = document.querySelector('section:nth-child(4) > div');
-                    const newEntry = document.createElement('div');
-                    newEntry.className = 'border-b border-gray-100 pb-4 mb-4';
-                    newEntry.innerHTML = `
-                      <div class="flex justify-between items-start">
-                        <div class="flex items-start space-x-4">
-                          <div class="w-10 h-10 flex items-center justify-center rounded-full ${
-                            mood === 'happy' ? 'bg-yellow-100 text-yellow-500' :
-                            mood === 'relaxed' ? 'bg-green-100 text-green-500' :
-                            mood === 'energetic' ? 'bg-red-100 text-red-500' : 'bg-blue-100 text-blue-500'}">
-                            <span class="text-xl">${mood === 'happy' ? '😊' : mood === 'relaxed' ? '😌' : mood === 'energetic' ? '😎' : '😔'}</span>
-                          </div>
-                          <div>
-                            <div class="flex items-center">
-                              <h3 class="font-medium text-gray-800">${mood.charAt(0).toUpperCase() + mood.slice(1)}</h3>
-                              <span class="text-gray-500 text-sm ml-2">• ${formattedDate}</span>
-                            </div>
-                            <p class="text-gray-600 mt-1">${notes || `Feeling ${mood} today!`}</p>
-                          </div>
-                        </div>
-                        <div class="w-8 h-8 flex items-center justify-center text-primary">
-                          <i class="ri-brain-line"></i>
-                        </div>
-                      </div>`;
-                    recentEntriesSection.prepend(newEntry);
-      
-                    const today = new Date();
-                    const todayCell = document.querySelector(`.calendar-day:nth-child(${today.getDay() + 8})`);
-                    if (todayCell) {
-                      todayCell.className = `calendar-day rounded text-center py-4 ${
-                        mood === 'happy' ? 'bg-yellow-200' :
-                        mood === 'relaxed' ? 'bg-green-200' :
-                        mood === 'energetic' ? 'bg-red-200' : 'bg-blue-200'}`;
-                      todayCell.innerHTML = `<span class="text-gray-700">${today.getDate()}</span>
-                                             <div class="mt-1">${mood === 'happy' ? '😊' : mood === 'relaxed' ? '😌' : mood === 'energetic' ? '😎' : '😔'}</div>`;
-                    }
-      
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'success mt-6 p-6';
-                    successMessage.textContent = 'Mood saved successfully!';
-                    moodSection.appendChild(successMessage);
-                    setTimeout(() => successMessage.remove(), 3000);
-                    confirmationDiv.remove();
-                  })
-                  .catch(error => {
-                    console.error("Save error:", error.message);
-                    const errorMessage = document.createElement('div');
-                    errorMessage.className = 'error mt-6 p-6';
-                    errorMessage.textContent = `Error saving mood: ${error.message}`;
-                    moodSection.appendChild(errorMessage);
-                  });
-              });
-            }, 1500);
+      const moodEmojis = {
+        happy: "🌼",
+        relaxed: "🌳",
+        energetic: "☀️",
+        melancholy: "🌧️"
+      };
+    
+      function updateGarden(mood) {
+        const icon = moodEmojis[mood];
+        if (!icon) return;
+    
+        fetch('/api/add-mood-garden', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mood, icon })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            const wrapper = document.createElement('div');
+            wrapper.className = "flex flex-col items-center text-sm animate-bounce";
+            wrapper.innerHTML = `<span class="text-2xl">${data.icon}</span><span class="text-gray-600">${data.date}</span>`;
+            document.getElementById('gardenPlot').appendChild(wrapper);
+    
+            const saved = JSON.parse(localStorage.getItem('moodGarden')) || [];
+            saved.push({ icon: data.icon, date: data.date });
+            localStorage.setItem('moodGarden', JSON.stringify(saved));
+    
+            setTimeout(() => wrapper.classList.remove('animate-bounce'), 1000);
           }
-      
-          moodCards.forEach(card => {
-            card.addEventListener('change', function () {
-              if (this.checked) {
-                createConfirmationElements(this.value);
-              }
-            });
-          });
-      
-          
-          });
+        });
+      }
+    
+      function showQuoteCard(quote) {
+  const cardWrapper = document.getElementById('quoteCard');
+  const card = cardWrapper.querySelector('div');
+  card.textContent = quote;
 
-      </script>
-      
+  cardWrapper.classList.remove('hidden');
+  card.classList.add('animate-fadeIn');
+
+  setTimeout(() => {
+    cardWrapper.classList.add('hidden');
+    card.classList.remove('animate-fadeIn');
+  }, 6000);
+}
+
+    
+      async function getDailyQuote() {
+  const today = new Date().toLocaleDateString();
+  const stored = JSON.parse(localStorage.getItem('dailyQuote'));
+
+  if (stored && stored.date === today) {
+    showQuoteCard(stored.quote);
+    return;
+  }
+
+  const res = await fetch("/api/daily-quote");
+  const data = await res.json();
+  const quote = data?.quote || "You're doing great, even if it's quiet progress.";
+if (quote.length > 120) {
+  quote = quote.slice(0, 110).trim() + "...";
+}
+quote = "🌟 " + quote.trim() + " 🌟";
+
+  showQuoteCard(quote);
+  localStorage.setItem('dailyQuote', JSON.stringify({ quote, date: today }));
+}
+    
+      document.addEventListener('DOMContentLoaded', function () {
+        getDailyQuote();
+    
+        const savedGarden = JSON.parse(localStorage.getItem('moodGarden')) || [];
+        const garden = document.getElementById('gardenPlot');
+        savedGarden.forEach(({ icon, date }) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = "flex flex-col items-center text-sm";
+          wrapper.innerHTML = `<span class="text-2xl">${icon}</span><span class="text-gray-600">${date}</span>`;
+          garden.appendChild(wrapper);
+        });
+    
+        document.getElementById('clearGarden').addEventListener('click', () => {
+          localStorage.removeItem('moodGarden');
+          garden.innerHTML = '';
+        });
+    
+        const moodCards = document.querySelectorAll('.mood-card input');
+        moodCards.forEach(card => {
+          card.addEventListener('change', () => {
+            updateGarden(card.value);
+          });
+        });
+      });
+    </script>
 </body>
-
-</html>
+</html>    
+  
