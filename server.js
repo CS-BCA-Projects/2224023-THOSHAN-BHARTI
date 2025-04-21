@@ -65,6 +65,7 @@ const profileRoutes = require('./routes/profile');
 const youtubeRoutes = require('./routes/youtubeRoutes');
 const browseRoutes = require('./routes/browse');
 const libraryRoutes = require('./routes/library');
+const { isAuthenticated } = require('./middleware/auth');
 
 // Routes
 app.use('/login', authRoutes);
@@ -109,8 +110,10 @@ app.get('/logout', (req, res) => {
 // Static Views
 app.get('/relax', (req, res) => res.render('relax'));
 app.get('/playlist', (req, res) => res.render('playlist'));
-app.get('/moodTracker', (req, res) => res.render('moodTracker'));
-
+app.get('/moodTracker', isAuthenticated, (req, res) => {
+    res.render('moodTracker', { user: req.session.user });
+  });
+  
 // Check Auth (AJAX-friendly)
 app.get('/checkAuth', (req, res) => {
     if (req.session.user) {
