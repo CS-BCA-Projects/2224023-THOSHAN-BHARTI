@@ -68,11 +68,22 @@
       <a href="/playlist" class="hover:text-green-400 block">Music</a>
       <a href="/relax" class="hover:text-green-400 block">Relax Activities</a>
       <a href="/moodTracker" class="hover:text-green-400 block">Mood Tracker</a>
+      <div class="hidden md:flex items-center gap-4 text-black relative">
+        <% if (user) { %>
+          <!-- Profile Dropdown -->
+          <div class="relative">
+            <button id="profileBtn" class="flex items-center gap-2 focus:outline-none hover:text-green-400">
+              <i class="ph ph-user-circle text-2xl"></i>
+              <i class="ph ph-caret-down text-sm"></i>
+            </button>
 
-      <% if (user) { %>
-        <a href="/profile/account" class="hover:text-green-400 block">👤 My Account</a>
-        <a href="/profile/edit" class="hover:text-green-400 block">✏️ Edit Account</a>
-        <a href="/admin" class="hover:text-green-400 block">🛠️ Admin</a>
+            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2 z-50">
+              <a href="/profile/account" class="block px-4 py-2 hover:bg-green-100">👤 My Account</a>
+              <a href="/profile/edit" class="block px-4 py-2 hover:bg-green-100">✏️ Edit Account</a>
+              <a href="/admin" class="block px-4 py-2 hover:bg-green-100">🛠️ Admin Page</a>
+              <a href="/logout" class="block px-4 py-2 hover:bg-red-100 text-red-600">🚪 Logout</a>
+            </div>
+          </div>
         <a href="/library" class="hover:text-green-400 block">📚 My Library</a>
         <a href="/logout" class="hover:text-red-400 block">🚪 Logout</a>
       <% } else { %>
