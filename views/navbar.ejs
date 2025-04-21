@@ -27,7 +27,7 @@
         <li><a href="/moodTracker" class="hover:text-green-400">Mood Tracker</a></li>
       </ul>
 
-      <!-- Right Side (Profile or Auth) -->
+      <!-- Right Side Desktop -->
       <div class="hidden md:flex items-center gap-4 text-black relative">
         <% if (user) { %>
           <!-- Profile Dropdown -->
@@ -36,7 +36,6 @@
               <i class="ph ph-user-circle text-2xl"></i>
               <i class="ph ph-caret-down text-sm"></i>
             </button>
-
             <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2 z-50">
               <a href="/profile/account" class="block px-4 py-2 hover:bg-green-100">👤 My Account</a>
               <a href="/profile/edit" class="block px-4 py-2 hover:bg-green-100">✏️ Edit Account</a>
@@ -44,7 +43,6 @@
               <a href="/logout" class="block px-4 py-2 hover:bg-red-100 text-red-600">🚪 Logout</a>
             </div>
           </div>
-
           <a href="/library" class="hover:text-green-400">📚 My Library</a>
         <% } else { %>
           <a href="/login" class="flex items-center gap-1 px-3 py-1.5 hover:text-green-400 transition">
@@ -57,35 +55,34 @@
       </div>
 
       <!-- Mobile Menu Toggle -->
-      <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+      <button id="menu-toggle" class="md:hidden text-black text-2xl focus:outline-none">
         <i class="ph ph-list"></i>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden mt-4 hidden flex-col gap-4 text-black font-medium px-4">
+    <div id="mobile-menu" class="md:hidden hidden flex-col gap-4 text-black font-medium px-4 pt-3">
       <a href="/" class="hover:text-green-400 block">Home</a>
       <a href="/playlist" class="hover:text-green-400 block">Music</a>
       <a href="/relax" class="hover:text-green-400 block">Relax Activities</a>
       <a href="/moodTracker" class="hover:text-green-400 block">Mood Tracker</a>
-      <div class="hidden md:flex items-center gap-4 text-black relative">
-        <% if (user) { %>
-          <!-- Profile Dropdown -->
-          <div class="relative">
-            <button id="profileBtn" class="flex items-center gap-2 focus:outline-none hover:text-green-400">
-              <i class="ph ph-user-circle text-2xl"></i>
-              <i class="ph ph-caret-down text-sm"></i>
-            </button>
 
-            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2 z-50">
-              <a href="/profile/account" class="block px-4 py-2 hover:bg-green-100">👤 My Account</a>
-              <a href="/profile/edit" class="block px-4 py-2 hover:bg-green-100">✏️ Edit Account</a>
-              <a href="/admin" class="block px-4 py-2 hover:bg-green-100">🛠️ Admin Page</a>
-              <a href="/logout" class="block px-4 py-2 hover:bg-red-100 text-red-600">🚪 Logout</a>
-            </div>
+      <% if (user) { %>
+        <!-- Mobile Profile Dropdown -->
+        <div class="relative">
+          <button id="mobileProfileBtn" class="flex items-center gap-2 focus:outline-none hover:text-green-400 w-full">
+            <i class="ph ph-user-circle text-2xl"></i>
+            <span>My Account</span>
+            <i class="ph ph-caret-down text-sm ml-auto"></i>
+          </button>
+          <div id="mobileProfileDropdown" class="hidden mt-2 w-full bg-white text-gray-800 rounded shadow-lg py-2 z-50">
+            <a href="/profile/account" class="block px-4 py-2 hover:bg-green-100">👤 My Account</a>
+            <a href="/profile/edit" class="block px-4 py-2 hover:bg-green-100">✏️ Edit Account</a>
+            <a href="/admin" class="block px-4 py-2 hover:bg-green-100">🛠️ Admin Page</a>
+            <a href="/logout" class="block px-4 py-2 hover:bg-red-100 text-red-600">🚪 Logout</a>
           </div>
+        </div>
         <a href="/library" class="hover:text-green-400 block">📚 My Library</a>
-        <a href="/logout" class="hover:text-red-400 block">🚪 Logout</a>
       <% } else { %>
         <a href="/login" class="hover:text-green-400 block">Login</a>
         <a href="/signup" class="hover:text-green-400 block">Signup</a>
@@ -93,8 +90,8 @@
     </div>
   </nav>
 
-  <!-- Push page content below navbar -->
-  <div class="pt-20"></div>
+  <!-- Push content below navbar -->
+  <div class="pt-24"></div>
 
   <!-- JS -->
   <script>
@@ -106,20 +103,26 @@
       menu.classList.toggle("hidden");
     });
 
-    // Profile dropdown toggle
+    // Desktop profile dropdown
     const profileBtn = document.getElementById("profileBtn");
     const profileDropdown = document.getElementById("profileDropdown");
 
     document.addEventListener("click", (e) => {
-      if (!profileBtn || !profileDropdown) return;
-
-      const isClickInside = profileBtn.contains(e.target) || profileDropdown.contains(e.target);
-      if (!isClickInside) {
-        profileDropdown.classList.add("hidden");
-      } else {
-        profileDropdown.classList.toggle("hidden");
+      if (profileBtn && profileDropdown) {
+        const inside = profileBtn.contains(e.target) || profileDropdown.contains(e.target);
+        profileDropdown.classList.toggle("hidden", !inside);
       }
     });
+
+    // Mobile profile dropdown
+    const mobileBtn = document.getElementById("mobileProfileBtn");
+    const mobileDropdown = document.getElementById("mobileProfileDropdown");
+
+    if (mobileBtn && mobileDropdown) {
+      mobileBtn.addEventListener("click", () => {
+        mobileDropdown.classList.toggle("hidden");
+      });
+    }
   </script>
 </body>
 </html>
