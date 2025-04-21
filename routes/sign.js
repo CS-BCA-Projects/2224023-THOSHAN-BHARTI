@@ -7,9 +7,9 @@ router.get('/', (req, res) => res.render('signup')); // Renders Signup Page
 
 // Signup Route
 router.post('/', async (req, res) => {
-    const { username, email, password, age, emotionalIssue } = req.body;
+    const { username, email, password, age } = req.body;
 
-    console.log("Data received:", username, email, password, age, emotionalIssue);
+    console.log("Data received:", username, email, password, age );
 
     if (!email || !password || !username) {
         return res.status(400).json({ success: false, message: 'Username, email, and password are required.' });
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
             email,
             password: hashedPassword,
             age,
-            emotionalIssue
+            
         });
 
         if (!newUser) {
