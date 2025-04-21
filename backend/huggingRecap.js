@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-HUGGINGFACE_API_KEY='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';
+const HF_TOKEN = process.env.HUGGINGFACE_API_KEY; // Hugging Face API token
 const MODEL = 'tiiuae/falcon-7b-instruct';
 
 async function generateMoodRecap(logText) {
