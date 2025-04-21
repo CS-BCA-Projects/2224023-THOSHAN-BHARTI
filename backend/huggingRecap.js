@@ -1,10 +1,23 @@
 const fetch = require('node-fetch');
 
-const HF_TOKEN = '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'; // or use process.env
+const HF_TOKEN = process.env.HF_API_KEY || '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';
 const MODEL = 'tiiuae/falcon-7b-instruct';
 
 async function generateMoodRecap(logText) {
-  const prompt = `You are a gentle and empathetic partner reading this journal:\n\n${logText}\n\nPlease respond with comforting words, emotional validation, and encouragement — like a supportive friend. Avoid formal tone or summaries.`;
+  const prompt = `
+You are an emotionally intelligent and compassionate AI companion.
+
+A human just shared their mood:
+"${logText}"
+
+Reply kindly like a real friend:
+- Use empathy and humor
+- Optionally include a calming poem, inspiring quote, or light story
+- Avoid repeating the user input
+- Avoid robotic tone
+- Keep it short and sincere
+
+AI Companion:`;
 
   const response = await fetch(`https://api-inference.huggingface.co/models/${MODEL}`, {
     method: 'POST',
@@ -15,14 +28,23 @@ async function generateMoodRecap(logText) {
     body: JSON.stringify({
       inputs: prompt,
       parameters: {
-        temperature: 0.8,
-        max_new_tokens: 200
+        temperature: 0.85,
+        max_new_tokens: 180,
+        top_p: 0.9,
+        do_sample: true
       }
     })
   });
 
   const data = await response.json();
-  return data?.[0]?.generated_text?.replace(prompt, '').trim() || "You're doing your best, and that matters. Keep going. 🌿";
+
+  // Extract only what comes after "AI Companion:"
+  const fullOutput = data?.[0]?.generated_text || '';
+  const aiReply = fullOutput.includes("AI Companion:")
+    ? fullOutput.split("AI Companion:")[1].trim()
+    : fullOutput.trim();
+
+  return aiReply || "I'm here for you — you matter 🌿";
 }
 
 module.exports = { generateMoodRecap };

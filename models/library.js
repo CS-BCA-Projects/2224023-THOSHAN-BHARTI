@@ -5,7 +5,7 @@ const LibraryItemSchema = new mongoose.Schema({
   title: String,
   videoId: String,
   thumbnail: String,
-  type: { type: String, enum: ['playlist', 'favorite', 'history'] },
+  type: { type: String, enum: ['playlist', 'favorite', 'history','unfavorite'] },
   playedAt: Date // only for history
 }, { timestamps: true });
 

@@ -45,84 +45,101 @@
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen">
-    <body class="min-h-screen flex flex-col items-center bg-green-100 font-sans">
+
+<body class="min-h-screen flex flex-col items-center bg-green-100 font-sans">
   <%- include('navbar') %>
 
   <main class="container mx-auto px-4 py-10">
-    
- 
     <!-- Browse Button -->
     <div class="text-center mb-10">
-      <a href= '/browse' class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition duration-300 shadow-lg">
+      <a href="/browse" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition duration-300 shadow-lg">
         Browse Songs
       </a>
     </div>
 
     <!-- Playlist Cards -->
     <h2 class="text-3xl font-bold text-green-900 mb-6">Relaxing Playlists</h2>
+
     <div id="cardsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Meditation" data-genre="meditation">
-        <img src="/images/morning.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Meditation image"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Meditation</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/bright.mp3" type="audio/mpeg" /></audio>
-      </div>
+      <% const staticSongs = [
+        { title: "Meditation", file: "/Songs/bright.mp3", image: "morning.jpg", id: "meditation" },
+        { title: "Calm Vibes", file: "/Songs/cheerful.mp3", image: "yoga.jpg", id: "calm" },
+        { title: "Focus Music", file: "/Songs/focus.mp3", image: "piano.jpg", id: "focus" },
+        { title: "Heartfelt Moments", file: "/Songs/heartfelt.mp3", image: "sea image.jpg", id: "heartfelt" },
+        { title: "Peaceful Piano", file: "/Songs/peaceful.mp3", image: "piano.jpg", id: "peaceful" },
+        { title: "Rain Sounds", file: "/Songs/rain.mp3", image: "rain.jpg", id: "rain" },
+        { title: "Soothing Strings", file: "/Songs/soothing.mp3", image: "soothingstrings.jpg", id: "soothing" }
+      ]; %>
 
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Calm Vibes" data-genre="calm">
-        <img src="/images/yoga.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Yoga calm image"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Calm Vibes</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/cheerful.mp3" type="audio/mpeg" /></audio>
-      </div>
-
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Focus Music" data-genre="focus">
-        <img src="/images/piano.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Piano focus"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Focus Music</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/focus.mp3" type="audio/mpeg" /></audio>
-      </div>
-
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Heartfelt Moments" data-genre="heartfelt">
-        <img src="/images/sea image.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Heartfelt sea"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Heartfelt Moments</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/heartfelt.mp3" type="audio/mpeg" /></audio>
-      </div>
-
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Peaceful Piano" data-genre="peaceful">
-        <img src="/images/piano.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Peaceful piano"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Peaceful Piano</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/peaceful.mp3" type="audio/mpeg" /></audio>
-      </div>
-
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Rain Sounds" data-genre="rain">
-        <img src="/images/rain.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Rain sound"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Rain Sounds</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/rain.mp3" type="audio/mpeg" /></audio>
-      </div>
-
-      <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="Soothing Strings" data-genre="soothing">
-        <img src="/images/soothingstrings.jpg" class="rounded-lg w-full h-40 object-cover mb-2" alt="Soothing strings"/>
-        <h3 class="text-lg font-semibold text-green-800 text-center mb-2">Soothing Strings</h3>
-        <audio controls class="w-full rounded-lg"><source src="/Songs/soothing.mp3" type="audio/mpeg" /></audio>
-      </div>
+      <% staticSongs.forEach(song => { %>
+        <div class="card fade-in bg-white/80 rounded-xl shadow-lg p-4" data-title="<%= song.title %>" data-genre="<%= song.id %>">
+          <img src="/images/<%= song.image %>" class="rounded-lg w-full h-40 object-cover mb-2" alt="<%= song.title %>"/>
+          <h3 class="text-lg font-semibold text-green-800 text-center mb-2"><%= song.title %></h3>
+          <audio controls class="w-full rounded-lg" onplay="logRecentlyPlayed('<%= song.title %>', '<%= song.id %>', '<%= song.file %>')">
+            <source src="<%= song.file %>" type="audio/mpeg" />
+          </audio>
+          <div class="flex justify-center gap-2 mt-3">
+            <button onclick="toggleFavorite(this, '<%= song.title %>', '<%= song.id %>', '<%= song.file %>')"
+                    class="text-gray-500 hover:text-pink-600 bg-transparent border border-current px-3 py-1 rounded-full">
+              🤍
+            </button>
+            <button onclick="addToLibrary('playlist', '<%= song.title %>', '<%= song.id %>', '<%= song.file %>')"
+                    class="text-blue-600 hover:text-blue-800 bg-transparent border border-current px-3 py-1 rounded-full">
+              ➕
+            </button>
+          </div>
+        </div>
+      <% }) %>
 
     </div>
   </main>
-<!-- JS Filtering Logic -->
-  <script>
-    function filterCards() {
-      const searchValue = document.getElementById('searchInput').value.toLowerCase();
-      const genreValue = document.getElementById('genreSelect').value;
-      const cards = document.querySelectorAll('.card');
 
-      cards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        const genre = card.getAttribute('data-genre');
-        const matchesSearch = title.includes(searchValue);
-        const matchesGenre = !genreValue || genre === genreValue;
-        card.style.display = (matchesSearch && matchesGenre) ? 'block' : 'none';
+  <!-- Favorite + History Logic -->
+  <script>
+    const favSet = new Set();
+
+    function toggleFavorite(button, title, videoId, fileUrl) {
+      const isFav = favSet.has(videoId);
+      const type = isFav ? 'unfavorite' : 'favorite';
+
+      fetch('/api/library/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, videoId, thumbnail: fileUrl, type })
+      }).then(() => {
+        if (isFav) {
+          favSet.delete(videoId);
+          button.innerText = '🤍';
+          button.classList.remove('text-pink-600');
+          button.classList.add('text-gray-500');
+        } else {
+          favSet.add(videoId);
+          button.innerText = '❤️';
+          button.classList.remove('text-gray-500');
+          button.classList.add('text-pink-600');
+        }
+      });
+    }
+
+    function addToLibrary(type, title, videoId, fileUrl) {
+      fetch('/api/library/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, videoId, thumbnail: fileUrl, type })
+      })
+      .then(res => res.json())
+      .then(() => alert(`${title} added to ${type}!`))
+      .catch(() => alert("You must be logged in."));
+    }
+
+    function logRecentlyPlayed(title, videoId, fileUrl) {
+      fetch('/api/library/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, videoId, thumbnail: fileUrl, type: 'history' })
       });
     }
   </script>
-
 </body>
 </html>

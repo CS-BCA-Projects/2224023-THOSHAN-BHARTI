@@ -1,52 +1,41 @@
-
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-  favorites: [{
-    title: String,
-    filename: String
-  }],
-  age: { type: Number, required: true },
-  emotionalIssues: [String], // e.g., ["anxiety", "stress"]
-  preferredGenres: [String], // e.g., ["relax", "focus"]
-  profilePhoto: { type: String, default: '/images/default-profile.png' },
-  
+  username: { type: String, required: false },
+  email:    { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 
-favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
-history: [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
-uploadedTracks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
-followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-profilePic: String, // Optional
+  // Social & media
+  profileImage: { type: String, default: '/images/avatar.png' },
+  uploadedTracks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
+  favorites:      [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
+  history:        [{ type: mongoose.Schema.Types.ObjectId, ref: "Track" }],
+  followers:      [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  following:      [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
-    isAdmin: {
-      type: Boolean,
-      default: false
-  },
+  // Personal info
+  age: { type: Number, required: false },
+  emotionalIssues: [String],       // ["anxiety", "stress"]
+  preferredGenres:  [String],      // ["relax", "focus"]
+
+  // Mood journaling
   moodHistory: [{
-    date: {
-      type: Date,
-      default: Date.now
-    },
+    date: { type: Date, default: Date.now },
     mood: {
       type: String,
       enum: ['happy', 'relaxed', 'energetic', 'melancholy'],
       required: true
     },
-    notes: {
-      type: String,
-      default: ''
-    }
+    notes: { type: String, default: '' }
   }],
-  profileImage: {
-    type: String,
-    default: '/images/avatar.png' // default image
-  }
-},   
-  // Other fields like age, emotionalIssues, etc., can be added here if needed
-{ timestamps: true });
+
+  // Roles
+  isAdmin: { type: Boolean, default: false },
+
+  // OTP for password reset
+  otp: String,
+  otpExpires: Date
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -12,13 +12,9 @@ const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 dotenv.config();
 const apiRoutes = require('./routes/api');
-
-
-// Connect MongoDB
-connectDB();
-
-// User schema (ensure moodHistory is included)
+const authsRoutes = require('./routes/Auths');
 const User = require('./models/user');
+connectDB();
 
 // Middleware
 app.use(express.json());
@@ -69,6 +65,7 @@ const profileRoutes = require('./routes/profile');
 const youtubeRoutes = require('./routes/youtubeRoutes');
 const browseRoutes = require('./routes/browse');
 const libraryRoutes = require('./routes/library');
+
 // Routes
 app.use('/login', authRoutes);
 app.use('/signup', signRoutes);
@@ -77,7 +74,7 @@ app.use('/admin', adminRoutes);
 app.use('/profile', profileRoutes);
 app.use('/browse', browseRoutes);
 app.use('/api/library', libraryRoutes);
-
+app.use('/', authsRoutes);
 // OAuth Routes
 app.get('/auth', (req, res) => {
     const url = oauth2Client.generateAuthUrl({

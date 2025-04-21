@@ -40,5 +40,10 @@ router.delete('/:type/:videoId', async (req, res) => {
   await LibraryItem.deleteOne({ userId, type, videoId });
   res.json({ success: true });
 });
-
+router.post('/unfavorite/:id', async (req, res) => {
+  const user = await user.findById(req.session.user._id);
+  user.favorites = user.favorites.filter(id => id.toString() !== req.params.id);
+  await user.save();
+  res.redirect('/mylibrary');
+});
 module.exports = router;

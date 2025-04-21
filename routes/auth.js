@@ -57,4 +57,72 @@ router.get('/logout', (req, res) => {
   });
 });
 
+
+// Forgot Password - form
+router.get('/forgot-password', (req, res) => {
+  res.render('forgot-password');
+});
+
+// POST: Email received → send OTP
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) return res.render('forgot-password', { error: 'Email not found' });
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  user.otp = otp;
+  user.otpExpires = Date.now() + 60 ;
+  await user.save();
+
+  await sendOTP(email, otp);
+  req.session.resetEmail = email;
+
+  res.redirect('/verify-otp');
+});
+
+// GET: OTP input page
+router.get('/verify-otp', (req, res) => {
+  res.render('verify-otp');
+});
+
+// POST: Verify OTP
+router.post('/verify-otp', async (req, res) => {
+  const { otp } = req.body;
+  const email = req.session.resetEmail;
+  const user = await User.findOne({ email });
+
+  if (!user || user.otp !== otp || Date.now() > user.otpExpires) {
+    return res.render('verify-otp', { error: 'Invalid or expired OTP' });
+  }
+
+  req.session.otpVerified = true;
+  res.redirect('/reset-password');
+});
+
+// GET: Reset password
+router.get('/reset-password', (req, res) => {
+  if (!req.session.otpVerified) return res.redirect('/forgot-password');
+  res.render('reset-password');
+});
+
+// POST: Save new password
+router.post('/reset-password', async (req, res) => {
+  const { password } = req.body;
+  const email = req.session.resetEmail;
+  const user = await User.findOne({ email });
+
+  user.password = password; // Assume hashing is handled in your model
+  user.otp = null;
+  user.otpExpires = null;
+  await user.save();
+
+  req.session.otpVerified = false;
+  req.session.resetEmail = null;
+
+  res.redirect('/login');
+});
+
+
+
 module.exports = router;

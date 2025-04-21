@@ -14,7 +14,15 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
+// Playlist page - fetch all songs from DB
+router.get('/playlist', async (req, res) => {
+  try {
+      const sounds = await Sound.find({});
+      res.render('playlist', { sounds });
+  } catch (err) {
+      res.status(500).send('Failed to load playlist');
+  }
+});
 
 
 module.exports = router;
