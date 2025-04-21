@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 router.get('/', (req, res) => res.render('signup')); // Renders Signup Page
 
@@ -33,16 +35,45 @@ router.post('/', async (req, res) => {
             email,
             password: hashedPassword,
             age,
-            
         });
 
         if (!newUser) {
             return res.status(400).json({ success: false, message: 'Failed to create user.' });
         }
 
+        // --- Nodemailer Email Setup using environment variables ---
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        const mailOptions = {
+            from: `"Serenity App" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: 'Welcome to Serenity 🌿',
+            html: `
+                <h2>Hi ${username},</h2>
+                <p>Thanks for signing up to <strong>Serenity</strong> — your peaceful space for music and mindfulness. 🌸</p>
+                <p>We're so glad to have you here!</p>
+                <br>
+                <p>✨ Stay relaxed,<br>The Serenity Team</p>
+            `
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending welcome email:', error);
+            } else {
+                console.log('Welcome email sent:', info.response);
+            }
+        });
+
         return res.status(200).json({
             success: true,
-            message: 'Signup successful! Redirecting...',
+            message: 'Signup successful! Welcome email sent. Redirecting...',
             redirectUrl: '/login'
         });
 
