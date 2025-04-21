@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Account - Nature Vibes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: cadetblue;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-gray-800 font-sans">
+  <%- include('navbar') %>
+
+  <div class="max-w-2xl mx-auto mt-20 bg-white/80 p-8 rounded-xl shadow-lg">
+    
+    <!-- Avatar Section -->
+    <div class="flex flex-col items-center mb-6">
+      <img src="<%= user.profileImage || '/images/avatar.png' %>" alt="Avatar"
+           class="w-28 h-28 rounded-full border-4 border-green-300 shadow mb-2 object-cover">
+      <h1 class="text-3xl font-bold text-green-800"><i class="fas fa-user text-purple-700 mr-2"></i>My Account</h1>
+    </div>
+
+    <!-- User Info -->
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700 font-semibold">Username:</span>
+        <span class="text-gray-900"><%= user.username || 'Not Set' %></span>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700 font-semibold">Email:</span>
+        <span class="text-gray-900"><%= user.email || 'Not Set' %></span>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700 font-semibold">Age:</span>
+        <span class="text-gray-900"><%= user.age || 'Not Set' %></span>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700 font-semibold">Emotional Issue:</span>
+        <span class="text-gray-900"><%= user.emotionalIssue || 'Not Shared' %></span>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-8 flex justify-center gap-4">
+      <a href="/profile/edit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
+        ✏️ Edit Info
+      </a>
+      <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow">
+        🚪 Logout
+      </a>
+    </div>
+  </div>
+</body>
+</html>

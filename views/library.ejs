@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Library - Nature Vibes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('/images/bg-nature.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-green-50 text-gray-800 font-sans">
+  <%- include('navbar') %>
+
+  <div class="max-w-6xl mx-auto mt-10 bg-white/80 p-8 rounded-2xl shadow-xl fade-in">
+    <h1 class="text-3xl font-bold text-green-800 mb-6 text-center">🎵 My Music Library</h1>
+
+    <!-- Tabs -->
+    <div class="flex justify-center gap-4 mb-8">
+<a href="/browse" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">My Playlist</a>
+<button onclick="showTab('favorite')" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Favorite</button>     
+ <button onclick="showTab('history')" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Recently Played</button>
+    </div>
+
+    <!-- Playlist -->
+    <div id="playlistTab" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <!-- Favorites -->
+    <div id="favoriteTab" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+
+    <!-- Recently Played -->
+    <div id="historyTab" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let player;
+
+    function showTab(tab) {
+      document.getElementById('playlistTab').classList.toggle('hidden', tab !== 'playlist');
+      document.getElementById('favoriteTab').classList.toggle('hidden', tab !== 'favorite');
+      document.getElementById('historyTab').classList.toggle('hidden', tab !== 'history');
+    }
+
+    async function loadLibrary(type, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      try {
+        const res = await fetch(`/api/library/${type}`);
+        const items = await res.json();
+
+        if (!items.length) {
+          container.innerHTML = `<p class="text-center text-gray-600 col-span-3">No ${type} songs yet.</p>`;
+          return;
+        }
+
+        items.forEach(song => {
+          const card = document.createElement('div');
+          card.className = 'bg-white p-4 rounded-xl shadow text-center fade-in';
+
+          card.innerHTML = `
+            <img src="${song.thumbnail}" alt="${song.title}" class="rounded-xl w-full h-48 object-cover mb-3 shadow" />
+            <h3 class="font-semibold text-green-800 mb-2">${song.title}</h3>
+            <div id="player-${song.videoId}" class="w-full h-0"></div>
+          `;
+
+          const playBtn = document.createElement('button');
+          playBtn.textContent = "▶️ Play";
+          playBtn.className = "bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-1";
+          playBtn.onclick = () => {
+            logPlayed(song);
+            if (player && player.getVideoData().video_id === song.videoId) {
+              player.playVideo();
+            } else {
+              player = new YT.Player(`player-${song.videoId}`, {
+                height: '0',
+                width: '0',
+                videoId: song.videoId,
+                playerVars: {
+                  autoplay: 1,
+                  controls: 0,
+                  modestbranding: 1,
+                  rel: 0,
+                },
+                events: {
+                  onReady: (event) => event.target.playVideo(),
+                },
+              });
+            }
+          };
+
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = "🗑 Remove";
+          removeBtn.className = "bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded mt-1 ml-2";
+          removeBtn.onclick = async () => {
+            await fetch(`/api/library/${type}/${song.videoId}`, { method: 'DELETE' });
+            loadLibrary(type, containerId);
+          };
+
+          card.appendChild(playBtn);
+          card.appendChild(removeBtn);
+          container.appendChild(card);
+        });
+      } catch (err) {
+        container.innerHTML = `<p class="text-red-500">Error loading ${type} library</p>`;
+        console.error(err);
+      }
+    }
+
+    function logPlayed(song) {
+      fetch('/api/library/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...song, type: 'history' })
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLibrary('playlist', 'playlistTab');
+      loadLibrary('favorite', 'favoriteTab');
+      loadLibrary('history', 'historyTab');
+    });
+  </script>
+</body>
+</html>

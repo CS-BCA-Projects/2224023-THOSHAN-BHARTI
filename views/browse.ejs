@@ -5,24 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Browse Songs - Nature Vibes</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style> 
-    .fade-in {
-      animation: fadeIn 1.2s ease-in-out;
-    }
+  <style>
+    .fade-in { animation: fadeIn 1.2s ease-in-out; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
     body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      animation: slideshow 40s infinite ease-in-out;
-      z-index: -1;
-      opacity: 0.9;
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      animation: slideshow 40s infinite ease-in-out; z-index: -1; opacity: 0.9;
     }
     @keyframes slideshow {
       0%, 20% {
@@ -38,38 +30,36 @@
         background-image: url('https://images.unsplash.com/photo-1496483648148-47c686dc86a8?auto=format&fit=crop&w=1950&q=80');
       }
     }
-    audio::-webkit-media-controls-panel {
-      background-color: #f0fdf4;
-      border-radius: 12px;
-    }
   </style>
 </head>
+
 <body class="min-h-screen bg-green-100 font-sans" style="background-image: url('/images/bg-nature.jpg'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <%- include('navbar') %>
-    <div class="bg-/80 mt-30 p-8 rounded-3xl shadow-xl max-w-6xl w-full mx-auto">
-      <div class="flex justify-between items-center mb-6">
-      <h2 class="text-3xl font-bold text-green-800">Browse by Genre 🎵</h2>
-      <a href="/playlist" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow">← Back to Playlist</a>
-    </div>
+<%- include('navbar') %>
 
-    <div class="flex justify-center gap-4 mb-6">
-      <select id="genreSelect" class="p-2 rounded-md border border-green-300">
-        <option value="">Select Genre</option>
-        <option value="Peaceful Nature Music">Peaceful</option>
-        <option value="Meditation Music">Meditation</option>
-        <option value="Relaxing Music">Relaxing</option>
-        <option value="Focus Music">Focus</option>
-        <option value="Rain Sounds">Rain</option>
-        <option value="Soothing Music">Soothing</option>
-      </select>
-      <button onclick="searchSongs()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">Search</button>
-    </div>
-
-    <div id="resultsTitle" class="text-xl font-semibold text-green-900 mb-4 text-center hidden">Search Results</div>
-    <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+<div class="bg-white/80 mt-30 p-8 rounded-3xl shadow-xl max-w-6xl w-full mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold text-green-800">Browse by Genre 🎵</h2>
+    <a href="/playlist" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow">← Back to Playlist</a>
   </div>
 
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <div class="flex justify-center gap-4 mb-6">
+    <select id="genreSelect" class="p-2 rounded-md border border-green-300">
+      <option value="">Select Genre</option>
+      <option value="Peaceful Nature Music">Peaceful</option>
+      <option value="Meditation Music">Meditation</option>
+      <option value="Relaxing Music">Relaxing</option>
+      <option value="Focus Music">Focus</option>
+      <option value="Rain Sounds">Rain</option>
+      <option value="Soothing Music">Soothing</option>
+    </select>
+    <button onclick="searchSongs()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">Search</button>
+  </div>
+
+  <div id="resultsTitle" class="text-xl font-semibold text-green-900 mb-4 text-center hidden">Search Results</div>
+  <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   let player;
 
@@ -89,11 +79,7 @@
       const res = await fetch(`/browse/api/youtube?q=${encodeURIComponent(genre)}`, {
         headers: { 'Accept': 'application/json' }
       });
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.log('Raw Error Response:', errorText);
-        throw new Error(`HTTP error! status: ${res.status}, ${errorText}`);
-      }
+      if (!res.ok) throw new Error("Failed request");
       const data = await res.json();
 
       if (!data.items || data.items.length === 0) {
@@ -107,16 +93,8 @@
         results.appendChild(card);
       });
     } catch (error) {
-      console.error("Error fetching songs:", error);
-      let errorMessage = 'Error fetching songs. Check server logs or API key.';
-      if (error.message.includes('429')) {
-        errorMessage = 'Quota exceeded. Please upgrade your API plan or wait.';
-      } else if (error.message.includes('403')) {
-        errorMessage = 'Access forbidden. Check your API key.';
-      } else if (error.message.includes('Unexpected token')) {
-        errorMessage = 'Server returned an error page. Verify API configuration.';
-      }
-      results.innerHTML = `<p class="text-red-500 text-center">${errorMessage}</p>`;
+      results.innerHTML = `<p class="text-red-500 text-center">Error fetching songs. Try again later.</p>`;
+      console.error(error);
     }
   }
 
@@ -126,7 +104,7 @@
     const thumbnail = item.snippet.thumbnails.medium.url;
 
     const card = document.createElement('div');
-    card.className = 'bg-white/80 p-4 rounded-xl shadow-lg text-center fade-in';
+    card.className = 'bg-white/90 p-4 rounded-xl shadow-lg text-center fade-in';
 
     card.innerHTML = `
       <img src="${thumbnail}" alt="${title}" class="rounded-xl mb-3 mx-auto w-full h-48 object-cover shadow-md" />
@@ -134,43 +112,85 @@
       <div id="player-${videoId}" class="w-full h-0"></div>
     `;
 
+    const buttonGroup = document.createElement('div');
+    buttonGroup.className = "flex flex-wrap justify-center gap-3 mt-4";
+
     const playBtn = document.createElement('button');
-    playBtn.textContent = "Play";
-    playBtn.className = "bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-full mt-2 shadow-md";
+    playBtn.innerHTML = "▶️";
+    playBtn.title = "Play";
+    playBtn.className = "bg-green-500 hover:bg-green-600 text-white text-xl w-10 h-10 rounded-full flex items-center justify-center shadow transition";
     playBtn.onclick = () => {
+      logRecentlyPlayed({ title, videoId, thumbnail });
       if (player && player.getVideoData().video_id === videoId) {
         player.playVideo();
       } else {
         player = new YT.Player(`player-${videoId}`, {
-          height: '0',
-          width: '0',
-          videoId: videoId,
-          playerVars: {
-            autoplay: 1,
-            controls: 0,
-            modestbranding: 1,
-            rel: 0,
-          },
-          events: {
-            onReady: (event) => event.target.playVideo(),
-            onError: (event) => console.error('YouTube Player error:', event.data),
-          },
+          height: '0', width: '0', videoId,
+          playerVars: { autoplay: 1, controls: 0, modestbranding: 1, rel: 0 },
+          events: { onReady: (event) => event.target.playVideo() },
         });
       }
     };
-    card.appendChild(playBtn);
+    buttonGroup.appendChild(playBtn);
 
     const stopBtn = document.createElement('button');
-    stopBtn.textContent = "Stop";
-    stopBtn.className = "bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-full mt-2 ml-2 shadow-md";
+    stopBtn.innerHTML = "⏹️";
+    stopBtn.title = "Stop";
+    stopBtn.className = "bg-red-500 hover:bg-red-600 text-white text-xl w-10 h-10 rounded-full flex items-center justify-center shadow transition";
     stopBtn.onclick = () => {
       if (player && player.getVideoData().video_id === videoId) {
         player.stopVideo();
       }
     };
-    card.appendChild(stopBtn);
+    buttonGroup.appendChild(stopBtn);
 
+    const addBtn = document.createElement('button');
+    addBtn.innerHTML = "➕";
+    addBtn.title = "Add to Playlist";
+    addBtn.className = "bg-blue-500 hover:bg-blue-600 text-white text-xl w-10 h-10 rounded-full flex items-center justify-center shadow transition";
+    addBtn.onclick = () => {
+      saveToLibrary('playlist', { title, videoId, thumbnail });
+    };
+    buttonGroup.appendChild(addBtn);
+
+    const favBtn = document.createElement('button');
+    favBtn.innerHTML = "❤️";
+    favBtn.title = "Favorite";
+    favBtn.className = "bg-pink-500 hover:bg-pink-600 text-white text-xl w-10 h-10 rounded-full flex items-center justify-center shadow transition";
+    favBtn.onclick = () => {
+      saveToLibrary('favorite', { title, videoId, thumbnail });
+    };
+    buttonGroup.appendChild(favBtn);
+
+    card.appendChild(buttonGroup);
     return card;
+  }
+
+  function saveToLibrary(type, song) {
+    fetch('/api/library/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...song, type })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
+    })
+    .then(() => {
+      alert(`${song.title} added to ${type === 'playlist' ? 'Playlist' : 'Favorites'}!`);
+    })
+    .catch(err => {
+      console.error(err);
+      alert("You must be logged in to save songs.");
+    });
+  }
+
+  function logRecentlyPlayed(song) {
+    fetch('/api/library/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...song, type: 'history' })
+    });
   }
 </script>
 </body>

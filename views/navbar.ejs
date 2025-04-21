@@ -27,11 +27,25 @@
         <li><a href="/moodTracker" class="hover:text-green-400">Mood Tracker</a></li>
       </ul>
 
-      <!-- Auth Section (Desktop) -->
-      <div class="hidden md:flex gap-4 text-white">
+      <!-- Right Side (Profile or Auth) -->
+      <div class="hidden md:flex items-center gap-4 text-white relative">
         <% if (user) { %>
-          <a href="/profile" class="hover:text-green-400">Profile</a>
-          <a href="/logout" class="hover:text-green-400">Logout</a>
+          <!-- Profile Dropdown -->
+          <div class="relative">
+            <button id="profileBtn" class="flex items-center gap-2 focus:outline-none hover:text-green-400">
+              <i class="ph ph-user-circle text-2xl"></i>
+              <i class="ph ph-caret-down text-sm"></i>
+            </button>
+
+            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg py-2 z-50">
+              <a href="/profile/account" class="block px-4 py-2 hover:bg-green-100">👤 My Account</a>
+              <a href="/profile/edit" class="block px-4 py-2 hover:bg-green-100">✏️ Edit Account</a>
+              <a href="/admin" class="block px-4 py-2 hover:bg-green-100">🛠️ Admin Page</a>
+              <a href="/logout" class="block px-4 py-2 hover:bg-red-100 text-red-600">🚪 Logout</a>
+            </div>
+          </div>
+
+          <a href="/library" class="hover:text-green-400">📚 My Library</a>
         <% } else { %>
           <a href="/login" class="flex items-center gap-1 px-3 py-1.5 hover:text-green-400 transition">
             <i class="ph ph-sign-in"></i> Login
@@ -56,8 +70,11 @@
       <a href="/moodTracker" class="hover:text-green-400 block">Mood Tracker</a>
 
       <% if (user) { %>
-        <a href="/profile" class="hover:text-green-400 block">Profile</a>
-        <a href="/logout" class="hover:text-green-400 block">Logout</a>
+        <a href="/profile/account" class="hover:text-green-400 block">👤 My Account</a>
+        <a href="/profile/edit" class="hover:text-green-400 block">✏️ Edit Account</a>
+        <a href="/admin" class="hover:text-green-400 block">🛠️ Admin</a>
+        <a href="/library" class="hover:text-green-400 block">📚 My Library</a>
+        <a href="/logout" class="hover:text-red-400 block">🚪 Logout</a>
       <% } else { %>
         <a href="/login" class="hover:text-green-400 block">Login</a>
         <a href="/signup" class="hover:text-green-400 block">Signup</a>
@@ -65,17 +82,32 @@
     </div>
   </nav>
 
-  <!-- Push content below navbar -->
+  <!-- Push page content below navbar -->
   <div class="pt-20"></div>
 
-  <!-- Page Content Here -->
-
+  <!-- JS -->
   <script>
+    // Mobile menu toggle
     const toggle = document.getElementById("menu-toggle");
     const menu = document.getElementById("mobile-menu");
 
     toggle.addEventListener("click", () => {
       menu.classList.toggle("hidden");
+    });
+
+    // Profile dropdown toggle
+    const profileBtn = document.getElementById("profileBtn");
+    const profileDropdown = document.getElementById("profileDropdown");
+
+    document.addEventListener("click", (e) => {
+      if (!profileBtn || !profileDropdown) return;
+
+      const isClickInside = profileBtn.contains(e.target) || profileDropdown.contains(e.target);
+      if (!isClickInside) {
+        profileDropdown.classList.add("hidden");
+      } else {
+        profileDropdown.classList.toggle("hidden");
+      }
     });
   </script>
 </body>

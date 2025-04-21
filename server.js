@@ -68,15 +68,15 @@ const adminRoutes = require('./routes/admin');
 const profileRoutes = require('./routes/profile');
 const youtubeRoutes = require('./routes/youtubeRoutes');
 const browseRoutes = require('./routes/browse');
-
+const libraryRoutes = require('./routes/library');
 // Routes
 app.use('/login', authRoutes);
 app.use('/signup', signRoutes);
 app.use('/playlist', playRoutes);
 app.use('/admin', adminRoutes);
 app.use('/profile', profileRoutes);
-app.use('/library', youtubeRoutes);
 app.use('/browse', browseRoutes);
+app.use('/api/library', libraryRoutes);
 
 // OAuth Routes
 app.get('/auth', (req, res) => {
@@ -123,6 +123,10 @@ app.get('/checkAuth', (req, res) => {
     }
 });
 
+app.get('/library', (req, res) => {
+    res.render('library');
+  });
+  
 // Mood Tracker Route with History
 app.get('/moodTracker', async (req, res) => {
     if (req.session.user) {
@@ -134,24 +138,6 @@ app.get('/moodTracker', async (req, res) => {
     }
 });
 
-// Gemini API Proxy
-app.post('/api/gemini', async (req, res) => {
-    const { prompt } = req.body;
-    try {
-        const response = await fetch(`https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/gemini-2.0-flash:generateContent`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${GEMINI_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-        });
-        const data = await response.json();
-        res.json(data.candidates[0].content.parts[0].text);
-    } catch (error) {
-        res.status(500).json({ error: 'Gemini API error' });
-    }
-});
 
 // YouTube API Proxy
 app.get('/api/youtube', async (req, res) => {

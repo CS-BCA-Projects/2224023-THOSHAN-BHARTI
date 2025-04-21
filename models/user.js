@@ -41,7 +41,12 @@ profilePic: String, // Optional
       default: ''
     }
   }],
+  profileImage: {
+    type: String,
+    default: '/images/avatar.png' // default image
+  }
+},   
   // Other fields like age, emotionalIssues, etc., can be added here if needed
-}, { timestamps: true });
+{ timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
