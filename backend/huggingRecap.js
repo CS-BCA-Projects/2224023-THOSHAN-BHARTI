@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const token=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; // ✅ safe way
+HUGGINGFACE_API_KEY='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';
 const MODEL = 'tiiuae/falcon-7b-instruct';
 
 async function generateMoodRecap(logText) {
