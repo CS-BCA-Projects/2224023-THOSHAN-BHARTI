@@ -106,10 +106,15 @@
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Talk to Your Emotional Companion</h2>
         <div id="chatWindow" class="bg-gray-50 p-4 h-80 overflow-y-auto rounded border border-gray-200 mb-4 space-y-4">
         </div>
+        
         <div class="flex items-center gap-3">
           <input id="chatInput" type="text" placeholder="Share your thoughts..."
             class="flex-1 px-4 py-2 border rounded-md" />
           <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded-md">Send</button>
+        </div>
+        <div class="max-w-2xl mx-auto text-center text-sm text-black-800 mt-2 italic">
+  💬 This chat is just for fun and relaxation. Not intended for medical advice or diagnosis.
+</div>
         </div>
       </section>
       <!-- Mood Garden Info -->
@@ -162,7 +167,8 @@
           happy: "🌼",
           relaxed: "🌳",
           energetic: "☀️",
-          melancholy: "🌧️"
+          melancholy: "🌧️",
+      
         };
 
         const savedGarden = JSON.parse(localStorage.getItem('moodGarden')) || [];

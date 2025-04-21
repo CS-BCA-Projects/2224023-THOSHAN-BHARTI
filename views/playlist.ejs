@@ -49,6 +49,16 @@
 <body class="min-h-screen flex flex-col items-center bg-green-100 font-sans">
   <%- include('navbar') %>
 
+  <!-- Earphone Popup -->
+  <div id="popup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-green-50 p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full border border-green-200">
+      <div class="text-4xl mb-4">🎧</div>
+      <h3 class="text-xl font-semibold text-green-900 mb-2">For the Best Experience</h3>
+      <p class="text-green-800 mb-4">Please use headphones to enjoy the full relaxing vibe 🌿</p>
+      <button onclick="closePopup()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-full transition shadow-md">Got it!</button>
+    </div>
+  </div>
+
   <main class="container mx-auto px-4 py-10">
     <!-- Browse Button -->
     <div class="text-center mb-10">
@@ -61,7 +71,6 @@
     <h2 class="text-3xl font-bold text-green-900 mb-6">Relaxing Playlists</h2>
 
     <div id="cardsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
       <% const staticSongs = [
         { title: "Meditation", file: "/Songs/bright.mp3", image: "morning.jpg", id: "meditation" },
         { title: "Calm Vibes", file: "/Songs/cheerful.mp3", image: "yoga.jpg", id: "calm" },
@@ -91,7 +100,6 @@
           </div>
         </div>
       <% }) %>
-
     </div>
   </main>
 
@@ -140,6 +148,13 @@
         body: JSON.stringify({ title, videoId, thumbnail: fileUrl, type: 'history' })
       });
     }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Optional: Auto-close popup after few seconds
+    // setTimeout(() => closePopup(), 8000);
   </script>
 </body>
 </html>
