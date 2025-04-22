@@ -174,7 +174,7 @@
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
 
-      if (!data.username || !data.email || !data.password || !data.cnfPassword || !data.age || !data.emotionalIssue) {
+      if (!data.username || !data.email || !data.password || !data.cnfPassword || !data.age ) {
         alert('All fields are required!');
         return;
       }
@@ -193,7 +193,7 @@
             email: data.email,
             password: data.password,
             age: data.age,
-            emotionalIssue: data.emotionalIssue
+           
           })
         });
 

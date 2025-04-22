@@ -13,8 +13,8 @@ router.post('/', async (req, res) => {
 
     console.log("Data received:", username, email, password, age );
 
-    if (!email || !password || !username) {
-        return res.status(400).json({ success: false, message: 'Username, email, and password are required.' });
+    if (!email || !password || !username  || !data.cnfPassword ||!age) {
+        return res.status(400).json({ success: false, message: 'Username, email,  age , and password are required.' });
     }
 
     try {
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            age,
+            age
         });
 
         if (!newUser) {

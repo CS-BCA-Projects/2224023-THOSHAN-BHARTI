@@ -15,8 +15,7 @@ const userSchema = new mongoose.Schema({
 
   // Personal info
   age: { type: Number, required: false },
-  emotionalIssues: [String],       // ["anxiety", "stress"]
-  preferredGenres:  [String],      // ["relax", "focus"]
+
 
   // Mood journaling
   moodHistory: [{
