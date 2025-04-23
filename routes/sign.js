@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
     console.log("Data received:", username, email, password, age );
 
-    if (!email || !password || !username  || !data.cnfPassword ||!age) {
+    if (!email || !password || !username  ||!age) {
         return res.status(400).json({ success: false, message: 'Username, email,  age , and password are required.' });
     }
 

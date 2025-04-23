@@ -2,54 +2,33 @@ const express = require('express');
 const router = express.Router();
 const { generateMoodRecap } = require('../backend/huggingRecap');
 require('dotenv').config();
+const fetch = require('node-fetch'); // Ensure you have this if not global
 
+// ✅ Mood Recap using huggingRecap.js (flan-t5-base)
 router.post('/mood-recap', async (req, res) => {
   const { logs } = req.body;
 
+  if (!logs) {
+    return res.status(400).json({ success: false, message: 'No mood log provided' });
+  }
+
   try {
-    const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        inputs: logs,
-        parameters: {
-          temperature: 0.85,
-          top_p: 0.95,
-          max_new_tokens: 250,
-          repetition_penalty: 1.1
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ success: false, error: `Hugging Face API error: ${response.status} - ${errorText}` });
-    }
-
-    const result = await response.json();
-    const rawText = result?.[0]?.generated_text || '';
-    const output = rawText.includes('Companion:')
-      ? rawText.split('Companion:').pop().trim()
-      : rawText.trim();
-
-    res.json({ success: true, recap: output });
+    const recap = await generateMoodRecap(logs);
+    res.json({ success: true, recap });
   } catch (error) {
-    console.error("Mixtral Chat Error:", error);
-    res.status(500).json({ success: false, error: 'Server error' });
+    console.error("Mood Recap Error:", error);
+    res.status(500).json({ success: false, recap: "I'm quiet right now. Please try again later 🌿" });
   }
 });
 
-// --- Mood Garden with Dates ---
+// 🌿 Mood Garden with emoji & date
 router.post('/add-mood-garden', (req, res) => {
   const { mood, icon } = req.body;
   const date = new Date().toLocaleDateString();
   res.json({ success: true, icon, date });
 });
 
-
+// 🌞 Daily Motivational Quote
 router.get('/daily-quote', async (req, res) => {
   const prompt = "Give a short, poetic motivational quote under 20 words.";
   try {
@@ -73,5 +52,3 @@ router.get('/daily-quote', async (req, res) => {
 });
 
 module.exports = router;
-
-
