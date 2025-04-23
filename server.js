@@ -1,8 +1,5 @@
 const express = require('express');
 const http = require('http');
-const app = express();
-const server = http.createServer(app);
-const io = require('socket.io')(server);
 const path = require('path');
 const dotenv = require('dotenv');
 const session = require('express-session');
@@ -10,64 +7,61 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./db');
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
-dotenv.config();
-const apiRoutes = require('./routes/api');
-const authsRoutes = require('./routes/Auths');
 const User = require('./models/user');
+
+dotenv.config();
 connectDB();
+
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'secret_key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false, maxAge: 86400000 }
+  secret: process.env.SESSION_SECRET || 'secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, maxAge: 86400000 }
 }));
 
-// Set view engine
+// Views and Static Files
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/songs", express.static(path.join(__dirname, "public", "Songs")));
-app.use('/api', apiRoutes);
-// Add session to all views
+
+// Session in views
 app.use((req, res, next) => {
-    res.locals.user = req.session.user || null;
-    next();
+  res.locals.user = req.session.user || null;
+  next();
 });
 
-// OAuth 2.0 Configuration for YouTube API
+// OAuth2 Config
 const oauth2Client = new OAuth2Client(
-    process.env.CLIENT_ID, // From .env
-    process.env.CLIENT_SECRET, // From .env
-    'http://localhost:3000/auth/callback'
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  'http://localhost:3000/auth/callback'
 );
 
 const scopes = ['https://www.googleapis.com/auth/youtube.readonly'];
-
-// API Credentials
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-const PROJECT_ID = process.env.PROJECT_ID;
-const LOCATION = process.env.LOCATION || 'us-central1';
 
-// Route imports
+// Route Imports
 const authRoutes = require('./routes/auth');
 const signRoutes = require('./routes/sign');
 const playRoutes = require('./routes/play');
 const adminRoutes = require('./routes/admin');
 const profileRoutes = require('./routes/profile');
-const youtubeRoutes = require('./routes/youtubeRoutes');
 const browseRoutes = require('./routes/browse');
 const libraryRoutes = require('./routes/library');
+const authsRoutes = require('./routes/Auths');
+const apiRoutes = require('./routes/api'); // ✅ Gemini AI route file
 const { isAuthenticated } = require('./middleware/auth');
 
-// Routes
+// Use Routes
 app.use('/login', authRoutes);
 app.use('/signup', signRoutes);
 app.use('/playlist', playRoutes);
@@ -75,112 +69,82 @@ app.use('/admin', adminRoutes);
 app.use('/profile', profileRoutes);
 app.use('/browse', browseRoutes);
 app.use('/api/library', libraryRoutes);
+app.use('/api', apiRoutes); // ✅ mounts Gemini logic
 app.use('/', authsRoutes);
-// OAuth Routes
+
+// Views
+app.get('/', (req, res) => res.render('home'));
+app.get('/relax', (req, res) => res.render('relax'));
+app.get('/playlist', (req, res) => res.render('playlist'));
+app.get('/library', (req, res) => res.render('library'));
+
+app.get('/moodTracker', isAuthenticated, async (req, res) => {
+  try {
+    const dbUser = await User.findById(req.session.user._id);
+    const moodHistory = dbUser?.moodHistory || [];
+    res.render('moodTracker', { user: req.session.user, moodHistory });
+  } catch (err) {
+    console.error("Error loading moodTracker:", err);
+    res.redirect('/login');
+  }
+});
+
+// OAuth Flow
 app.get('/auth', (req, res) => {
-    const url = oauth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: scopes,
-        prompt: 'consent'
-    });
-    res.redirect(url);
+  const url = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: scopes,
+    prompt: 'consent'
+  });
+  res.redirect(url);
 });
 
 app.get('/auth/callback', async (req, res) => {
-    const code = req.query.code;
-    const { tokens } = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(tokens);
-    if (req.session.user) {
-        req.session.user.tokens = tokens;
-        await User.findByIdAndUpdate(req.session.user._id, { tokens });
-    }
-    res.redirect('/moodTracker?authenticated=true');
+  const code = req.query.code;
+  const { tokens } = await oauth2Client.getToken(code);
+  oauth2Client.setCredentials(tokens);
+  if (req.session.user) {
+    req.session.user.tokens = tokens;
+    await User.findByIdAndUpdate(req.session.user._id, { tokens });
+  }
+  res.redirect('/moodTracker?authenticated=true');
 });
 
-// Home
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
-// Logout
-app.get('/logout', (req, res) => {
-    req.session.destroy(() => res.redirect('/'));
-});
-
-// Static Views
-app.get('/relax', (req, res) => res.render('relax'));
-app.get('/playlist', (req, res) => res.render('playlist'));
-app.get('/moodTracker', isAuthenticated, (req, res) => {
-    res.render('moodTracker', { user: req.session.user });
-  });
-  
-// Check Auth (AJAX-friendly)
-app.get('/checkAuth', (req, res) => {
-    if (req.session.user) {
-        res.json({ success: true, user: req.session.user.username });
-    } else {
-        res.json({ success: false });
-    }
-});
-
-app.get('/library', (req, res) => {
-    res.render('library');
-  });
-  
-// Mood Tracker Route with History
-app.get('/moodTracker', async (req, res) => {
-    if (req.session.user) {
-        const user = await User.findById(req.session.user._id);
-        const moodHistory = user.moodHistory || [];
-        res.render('index', { moodHistory });
-    } else {
-        res.redirect('/login');
-    }
-});
-
-
-// YouTube API Proxy
+// YouTube Proxy
 app.get('/api/youtube', async (req, res) => {
-    const { q } = req.query;
-    try {
-        const youtube = google.youtube({
-            version: 'v3',
-            auth: YOUTUBE_API_KEY
-        });
-        const searchResponse = await youtube.search.list({
-            part: 'snippet',
-            q: q,
-            maxResults: 1,
-            type: 'video'
-        });
-        const videoId = searchResponse.data.items[0].id.videoId;
-        const videoResponse = await youtube.videos.list({
-            part: 'snippet,statistics',
-            id: videoId
-        });
-        res.json(videoResponse.data.items[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'YouTube API error' });
-    }
+  try {
+    const youtube = google.youtube({ version: 'v3', auth: YOUTUBE_API_KEY });
+    const searchResponse = await youtube.search.list({
+      part: 'snippet',
+      q: req.query.q,
+      maxResults: 1,
+      type: 'video'
+    });
+    const videoId = searchResponse.data.items[0]?.id.videoId;
+    const videoDetails = await youtube.videos.list({
+      part: 'snippet,statistics',
+      id: videoId
+    });
+    res.json(videoDetails.data.items[0]);
+  } catch (error) {
+    res.status(500).json({ error: 'YouTube API error' });
+  }
 });
 
-// Socket.IO for Live Updates
+// Socket.IO Setup
 io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
-    socket.on('updateLiveInsights', (songTitle) => {
-        io.emit('liveInsights', { songTitle, message: `Updated insights for ${songTitle}` });
-    });
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
-    });
+  console.log('User connected:', socket.id);
+  socket.on('updateLiveInsights', (songTitle) => {
+    io.emit('liveInsights', { songTitle, message: `Updated insights for ${songTitle}` });
+  });
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
 });
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error('❗ Error:', err.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+// Start
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
 
-// Start Server
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,277 +11,183 @@
       font-family: 'Inter', sans-serif;
       background-color: #f9fafb;
     }
-
-    .mood-card {
-      transition: all 0.3s ease;
-    }
-
-    .mood-card:hover {
-      transform: translateY(-2px);
-    }
-
-    input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
+    .mood-card { transition: all 0.3s ease; }
+    .mood-card:hover { transform: translateY(-2px); }
+    input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
     input[type="radio"]+label {
-      cursor: pointer;
-      transition: all 0.2s ease;
+      cursor: pointer; transition: all 0.2s ease;
     }
-
     input[type="radio"]:checked+label {
-      border-color: #4CAF50;
-      background-color: rgba(76, 175, 80, 0.1);
+      border-color: #4CAF50; background-color: rgba(76, 175, 80, 0.1);
     }
-
     @keyframes grow {
-      0% {
-        transform: scale(0);
-        opacity: 0;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
-
-    .animate-grow {
-      animation: grow 0.6s ease-out forwards;
-    }
+    .animate-grow { animation: grow 0.5s ease-out; }
   </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center bg-green-100 font-sans">
+<body class="min-h-screen bg-green-100 font-sans">
   <%- include('navbar') %>
-    <main class="container">
-      <section class="text-center mb-12">
-        <h1 class="text-5xl font-serif text-gray-700 mb-4">Mood Tracker</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">Select your mood to receive meaningful recommendations</p>
-      </section>
+  <main class="container mx-auto px-4 py-10">
 
-      <section class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-8 mb-12">
-        <h2 class="text-2xl font-serif text-gray-800 mb-8 text-center">How are you feeling today?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div class="mood-card"><input type="radio" name="mood" id="happy" value="happy">
-            <label for="happy"
-              class="flex flex-col items-center justify-center p-4 border-2 border-yellow-200 rounded-full bg-yellow-50 hover:bg-yellow-100 transition-colors">
-              <div class="w-10 h-10 flex items-center justify-center text-yellow-500 mb-2"><i
-                  class="ri-sun-line ri-xl"></i></div>
-              <span class="text-gray-700">Happy</span>
+    <!-- Mood Selector -->
+    <section class="max-w-3xl mx-auto bg-white rounded-lg shadow p-8 mb-10">
+      <h1 class="text-3xl font-serif text-center text-gray-800 mb-6">🌤️ How are you feeling today?</h1>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <% const moods = [
+            { id: "happy", icon: "ri-sun-line", label: "Happy", color: "yellow" },
+            { id: "relaxed", icon: "ri-mental-health-line", label: "Relaxed", color: "green" },
+            { id: "energetic", icon: "ri-flashlight-line", label: "Energetic", color: "red" },
+            { id: "melancholy", icon: "ri-moon-clear-line", label: "Melancholy", color: "blue" },
+          ];
+        %>
+        <% moods.forEach(m => { %>
+          <div class="mood-card">
+            <input type="radio" name="mood" id="<%= m.id %>" value="<%= m.id %>">
+            <label for="<%= m.id %>" class="flex flex-col items-center justify-center p-4 border-2 border-<%= m.color %>-200 rounded-full bg-<%= m.color %>-50 hover:bg-<%= m.color %>-100 transition">
+              <i class="<%= m.icon %> ri-xl text-<%= m.color %>-500 mb-2"></i>
+              <span class="text-gray-700"><%= m.label %></span>
             </label>
           </div>
-          <div class="mood-card"><input type="radio" name="mood" id="relaxed" value="relaxed">
-            <label for="relaxed"
-              class="flex flex-col items-center justify-center p-4 border-2 border-green-200 rounded-full bg-green-50 hover:bg-green-100 transition-colors">
-              <div class="w-10 h-10 flex items-center justify-center text-green-500 mb-2"><i
-                  class="ri-mental-health-line ri-xl"></i></div>
-              <span class="text-gray-700">Relaxed</span>
-            </label>
-          </div>
-          <div class="mood-card"><input type="radio" name="mood" id="energetic" value="energetic">
-            <label for="energetic"
-              class="flex flex-col items-center justify-center p-4 border-2 border-red-200 rounded-full bg-red-50 hover:bg-red-100 transition-colors">
-              <div class="w-10 h-10 flex items-center justify-center text-red-500 mb-2"><i
-                  class="ri-flashlight-line ri-xl"></i></div>
-              <span class="text-gray-700">Energetic</span>
-            </label>
-          </div>
-          <div class="mood-card"><input type="radio" name="mood" id="melancholy" value="melancholy">
-            <label for="melancholy"
-              class="flex flex-col items-center justify-center p-4 border-2 border-blue-200 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors">
-              <div class="w-10 h-10 flex items-center justify-center text-blue-500 mb-2"><i
-                  class="ri-moon-clear-line ri-xl"></i></div>
-              <span class="text-gray-700">Melancholy</span>
-            </label>
-          </div>
-        </div>
-      </section>
+        <% }) %>
+      </div>
+    </section>
 
-      <section class="max-w-2xl mx-auto my-8 bg-white p-6 rounded-xl shadow">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Talk to Your Emotional Companion</h2>
-        <div id="chatWindow" class="bg-gray-50 p-4 h-80 overflow-y-auto rounded border border-gray-200 mb-4 space-y-4">
-        </div>
-        
-        <div class="flex items-center gap-3">
-          <input id="chatInput" type="text" placeholder="Share your thoughts..."
-            class="flex-1 px-4 py-2 border rounded-md" />
-          <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded-md">Send</button>
-        </div>
-        <div class="max-w-2xl mx-auto text-center text-sm text-black-800 mt-2 italic">
-  💬 This chat is just for fun and relaxation. Not intended for medical advice or diagnosis.
-</div>
-        </div>
-      </section>
-      <!-- Mood Garden Info -->
-      <section
-        class="max-w-2xl mx-auto text-center px-4 py-6 bg-green-50 rounded-xl shadow mb-4 border border-green-200">
-        <h2 class="text-2xl font-semibold text-green-800 mb-2">🌿 What is the Mood Garden?</h2>
-        <p class="text-gray-700 leading-relaxed">
-          Every time you log a mood, a plant grows! 🌼<br>
-          <strong>Happy?</strong> You grow a bright flower. 🌼<br>
-          <strong>Relaxed?</strong> A calming tree appears. 🌳<br>
-          <strong>Energetic?</strong> You shine with a sun. ☀️<br>
-          <strong>Melancholy?</strong> It gently rains. 🌧️<br>
-          Your Mood Garden is your emotional forest. It grows with every feeling you log. 🌱✨
-        </p>
-      </section>
+    <!-- AI Mood Recap -->
+    <section id="aiInsightSection" class="max-w-2xl mx-auto my-8 bg-white p-6 rounded-xl shadow hidden">
+      <h2 class="text-xl font-semibold text-green-700 mb-4">🌱 AI Mood Suggestions</h2>
+      <ul id="aiInsightList" class="text-gray-700 list-disc pl-5 space-y-2"></ul>
+    </section>
 
-      <!-- Mood Garden -->
-      <section id="moodGarden" class="max-w-2xl mx-auto bg-white mt-6 p-4 rounded-xl shadow text-center">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Your Mood Garden</h2>
-        <button id="clearGarden" class="mb-4 px-4 py-2 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded">🗑️
-          Clear Garden</button>
-        <div id="gardenPlot" class="grid grid-cols-4 gap-4 p-4 min-h-[100px] bg-green-50 rounded"></div>
-      </section>
-      <style>
-        @keyframes grow {
-          0% {
-            transform: scale(0.5);
-            opacity: 0;
-          }
+    <!-- AI Chat Box -->
+    <section class="max-w-2xl mx-auto my-8 bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">💬 Talk to your Emotional Companion</h2>
+      <div id="chatWindow" class="bg-gray-50 p-4 h-80 overflow-y-auto rounded border border-gray-200 mb-4 space-y-3"></div>
+      <div class="flex items-center gap-2">
+        <input id="chatInput" type="text" placeholder="Share your thoughts..." class="flex-1 px-4 py-2 border rounded-md" />
+        <button onclick="sendMessage()" class="px-4 py-2 bg-green-500 text-white rounded-md">Send</button>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 italic text-center">This chat is for relaxation and reflection only 🌿</p>
+    </section>
 
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
+    <!-- Mood Garden Visual -->
+    <section class="max-w-2xl mx-auto my-6 bg-green-50 border border-green-200 rounded-xl shadow p-6 text-center">
+      <h2 class="text-2xl font-semibold text-green-800 mb-4">🌿 Your Mood Garden</h2>
+      <button id="clearGarden" class="mb-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded text-sm">🗑️ Clear Garden</button>
+      <div id="gardenPlot" class="grid grid-cols-4 gap-4 min-h-[100px] bg-green-100 p-4 rounded"></div>
+    </section>
+
+  </main>
+
+  <!-- 🌱 Scripts -->
+  <script>
+    const moodEmojis = { happy: "🌼", relaxed: "🌳", energetic: "☀️", melancholy: "🌧️" };
+    const garden = document.getElementById('gardenPlot');
+    const savedGarden = JSON.parse(localStorage.getItem('moodGarden')) || [];
+
+    savedGarden.forEach(({ icon, date }) => {
+      const el = document.createElement('div');
+      el.className = "flex flex-col items-center text-sm";
+      el.innerHTML = `<span class="text-2xl">${icon}</span><span class="text-gray-600">${date}</span>`;
+      garden.appendChild(el);
+    });
+
+    document.getElementById('clearGarden').onclick = () => {
+      localStorage.removeItem('moodGarden');
+      garden.innerHTML = '';
+    };
+
+    const moodInputs = document.querySelectorAll('.mood-card input');
+    moodInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        updateGarden(input.value);
+        fetchAIInsight(input.value);
+      });
+    });
+
+    function updateGarden(mood) {
+      const icon = moodEmojis[mood];
+      if (!icon) return;
+      fetch('/api/add-mood-garden', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood, icon })
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          const wrap = document.createElement('div');
+          wrap.className = "flex flex-col items-center text-sm animate-grow";
+          wrap.innerHTML = `<span class="text-2xl">${data.icon}</span><span class="text-gray-600">${data.date}</span>`;
+          garden.appendChild(wrap);
+
+          const saved = JSON.parse(localStorage.getItem('moodGarden')) || [];
+          saved.push({ icon: data.icon, date: data.date });
+          localStorage.setItem('moodGarden', JSON.stringify(saved));
         }
+      });
+    }
 
-        .animate-grow {
-          animation: grow 0.5s ease-out;
-        }
-      </style>
+    async function fetchAIInsight(mood) {
+      const response = await fetch('/api/mood-recap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logs: `My mood is ${mood}. What are 5 healthy or relaxing things I can do?` })
+      });
+      const result = await response.json();
+      const section = document.getElementById('aiInsightSection');
+      const list = document.getElementById('aiInsightList');
+      list.innerHTML = '';
 
-      <!-- AI Insight Section -->
-      <section id="aiInsightSection" class="max-w-2xl mx-auto my-8 bg-white p-6 rounded-xl shadow hidden">
-        <h2 class="text-xl font-semibold text-green-700 mb-4">🌱 AI Mood Recommendations</h2>
-        <ul id="aiInsightList" class="text-gray-700 list-disc pl-5 space-y-2"></ul>
-      </section>
-
-      <script>
-        const moodEmojis = {
-          happy: "🌼",
-          relaxed: "🌳",
-          energetic: "☀️",
-          melancholy: "🌧️",
-      
-        };
-
-        const savedGarden = JSON.parse(localStorage.getItem('moodGarden')) || [];
-        const garden = document.getElementById('gardenPlot');
-        savedGarden.forEach(({ icon, date }) => {
-          const wrapper = document.createElement('div');
-          wrapper.className = "flex flex-col items-center text-sm";
-          wrapper.innerHTML = `<span class="text-2xl">${icon}</span><span class="text-gray-600">${date}</span>`;
-          garden.appendChild(wrapper);
+      if (result.success && result.recap) {
+        const tips = result.recap.split(/\n|\u2022|\-|\d\./).map(t => t.trim()).filter(Boolean).slice(0, 5);
+        tips.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+          list.appendChild(li);
         });
+      } else {
+        list.innerHTML = `<li>AI is recharging 🌙 Try again later.</li>`;
+      }
 
-        document.getElementById('clearGarden').addEventListener('click', () => {
-          localStorage.removeItem('moodGarden');
-          garden.innerHTML = '';
-        });
+      section.classList.remove('hidden');
+    }
 
-        function updateGarden(mood) {
-          const icon = moodEmojis[mood];
-          if (!icon) return;
+    async function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
 
-          fetch('/api/add-mood-garden', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mood, icon })
-          })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                const wrapper = document.createElement('div');
-                wrapper.className = "flex flex-col items-center text-sm animate-grow";
-                wrapper.innerHTML = `<span class="text-2xl">${data.icon}</span><span class="text-gray-600">${data.date}</span>`;
-                garden.appendChild(wrapper);
+      const chatWindow = document.getElementById('chatWindow');
+      const user = document.createElement('div');
+      user.className = "text-right text-sm bg-green-100 p-2 rounded mb-1 max-w-xs ml-auto";
+      user.textContent = message;
+      chatWindow.appendChild(user);
 
-                const saved = JSON.parse(localStorage.getItem('moodGarden')) || [];
-                saved.push({ icon: data.icon, date: data.date });
-                localStorage.setItem('moodGarden', JSON.stringify(saved));
-              }
-            });
-        }
+      input.value = '';
+      input.disabled = true;
 
-        const moodCards = document.querySelectorAll('.mood-card input');
-        moodCards.forEach(card => {
-          card.addEventListener('change', () => {
-            updateGarden(card.value);
-            fetchAIInsight(card.value);
-          });
-        });
+      const thinking = document.createElement('div');
+      thinking.className = "text-left text-sm text-gray-400 italic";
+      thinking.textContent = "Thinking...";
+      chatWindow.appendChild(thinking);
 
-        async function fetchAIInsight(mood) {
-          const response = await fetch('/api/mood-recap', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ logs: `My mood is ${mood}. What are 5 healthy or creative things I can do right now?` })
-          });
+      const res = await fetch('/api/mood-recap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logs: message })
+      });
+      const data = await res.json();
+      input.disabled = false;
+      chatWindow.removeChild(thinking);
 
-          const result = await response.json();
-          const aiSection = document.getElementById('aiInsightSection');
-          const list = document.getElementById('aiInsightList');
-          list.innerHTML = '';
+      const bot = document.createElement('div');
+      bot.className = "text-left text-sm bg-white p-2 rounded shadow mb-1 max-w-xs";
+      bot.textContent = data.recap || "AI is quiet right now. Try again soon.";
+      chatWindow.appendChild(bot);
 
-          if (result.success && result.recap) {
-            const lines = result.recap.split(/\n|\u2022|\-|\d\./).map(line => line.trim()).filter(Boolean).slice(0, 5);
-            lines.forEach(item => {
-              const li = document.createElement('li');
-              li.textContent = item.charAt(0).toUpperCase() + item.slice(1);
-              list.appendChild(li);
-            });
-          } else {
-            const li = document.createElement('li');
-            li.textContent = 'AI is recharging — try again shortly.';
-            list.appendChild(li);
-          }
-
-          aiSection.classList.remove('hidden');
-        }
-
-        async function sendMessage() {
-          const input = document.getElementById('chatInput');
-          const message = input.value.trim();
-          if (!message) return;
-
-          const chatWindow = document.getElementById('chatWindow');
-          const userMsg = document.createElement('div');
-          userMsg.className = "text-right text-sm bg-green-100 p-2 rounded mb-1 max-w-xs ml-auto";
-          userMsg.textContent = message;
-          chatWindow.appendChild(userMsg);
-
-          input.value = '';
-          input.disabled = true;
-
-          const thinking = document.createElement('div');
-          thinking.className = "text-left text-sm text-gray-400 italic";
-          thinking.textContent = "Thinking...";
-          chatWindow.appendChild(thinking);
-
-          const res = await fetch('/api/mood-recap', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ logs: message })
-          });
-
-          const data = await res.json();
-          input.disabled = false;
-          chatWindow.removeChild(thinking);
-
-          const botMsg = document.createElement('div');
-          botMsg.className = "text-left text-sm bg-white p-2 rounded shadow mb-1 max-w-xs";
-          botMsg.textContent = data.recap || "AI is quiet right now. Try again soon.";
-          chatWindow.appendChild(botMsg);
-
-          chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-      </script>
-    </main>
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  </script>
 </body>
-
 </html>
