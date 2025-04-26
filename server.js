@@ -10,6 +10,7 @@ const { OAuth2Client } = require('google-auth-library');
 const User = require('./models/user');
 const Songs = require('./models/song'); // Import the Songs model
 dotenv.config();
+
 connectDB();
 
 const app = express();
@@ -86,6 +87,19 @@ app.get('/playlist', async (req, res) => {
 });
 app.get('/library', (req, res) => res.render('library'));
 
+app.get('/logout', (req, res) => {
+
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Session destroy error:', err);
+      return res.status(500).json({ message: 'Failed to log out. Please try again.' });
+    }
+    
+    res.clearCookie('connect.sid', { path: '/' });
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.redirect('/login');
+  });
+});
 
 app.get('/moodTracker', isLoggedIn, async (req, res) => {
   try {

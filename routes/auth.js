@@ -49,16 +49,9 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong on login' });
   }
 });
-router.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-      if (err) {
-          console.log(err);
-          res.send('Error logging out');
-      } else {
-          res.redirect('/login');
-      }
-  });
-});
+
+
+
 // Forgot Password - form
 router.get('/forgot-password', (req, res) => {
   res.render('forgot-password');
