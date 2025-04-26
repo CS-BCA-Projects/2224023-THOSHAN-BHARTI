@@ -1,8 +1,11 @@
-function isAuthenticated(req, res, next) {
-  if (req.session && req.session.user) {
-    return next();
+// middleware/auth.js
+
+function isLoggedIn(req, res, next) {
+  if (req.session.user) {
+      next(); // User is logged in, proceed to requested page
+  } else {
+      res.redirect('/login'); // Not logged in, go to login page
   }
-  res.redirect('/login');
 }
 
-module.exports = { isAuthenticated };
+module.exports = { isLoggedIn };

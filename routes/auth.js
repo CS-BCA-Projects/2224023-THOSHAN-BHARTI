@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
       email: user.email,
       age: user.age || 'Not set',
       profileImage: user.profileImage || '/images/avatar.png',
-      emotionalIssue: user.emotionalIssue || 'Not shared',
+     
       isAdmin: user.isAdmin || (user.email === 'thoshansbg2005@gmail.com') // fallback admin logic
     };
 
@@ -49,15 +49,16 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong on login' });
   }
 });
-
-// GET Logout
 router.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/login'); // Redirect to login page after logout
+  req.session.destroy((err) => {
+      if (err) {
+          console.log(err);
+          res.send('Error logging out');
+      } else {
+          res.redirect('/login');
+      }
   });
 });
-
-
 // Forgot Password - form
 router.get('/forgot-password', (req, res) => {
   res.render('forgot-password');

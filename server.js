@@ -8,7 +8,7 @@ const connectDB = require('./db');
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('./models/user');
-
+const Songs = require('./models/song'); // Import the Songs model
 dotenv.config();
 connectDB();
 
@@ -31,7 +31,7 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/songs", express.static(path.join(__dirname, "public", "Songs")));
+app.use("/Song", express.static(path.join(__dirname, "public", "Songs")));
 
 // Session in views
 app.use((req, res, next) => {
@@ -59,7 +59,7 @@ const browseRoutes = require('./routes/browse');
 const libraryRoutes = require('./routes/library');
 const authsRoutes = require('./routes/Auths');
 const apiRoutes = require('./routes/api'); // ✅ Gemini AI route file
-const { isAuthenticated } = require('./middleware/auth');
+const { isLoggedIn} = require('./middleware/auth');
 
 // Use Routes
 app.use('/login', authRoutes);
@@ -75,10 +75,19 @@ app.use('/', authsRoutes);
 // Views
 app.get('/', (req, res) => res.render('home'));
 app.get('/relax', (req, res) => res.render('relax'));
-app.get('/playlist', (req, res) => res.render('playlist'));
+app.get('/playlist', async (req, res) => {
+  try {
+    const sounds = await Songs.find(); // Fetch dynamic songs from MongoDB
+    res.render('playlist', { sounds });
+  } catch (error) {
+    console.error('Error fetching songs:', error);
+    res.render('playlist', { sounds: [] }); // Pass an empty array if there's an error
+  }
+});
 app.get('/library', (req, res) => res.render('library'));
 
-app.get('/moodTracker', isAuthenticated, async (req, res) => {
+
+app.get('/moodTracker', isLoggedIn, async (req, res) => {
   try {
     const dbUser = await User.findById(req.session.user._id);
     const moodHistory = dbUser?.moodHistory || [];

@@ -84,11 +84,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #1a6940;
+      border: 1px solid #ffb3d9;
       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
     }
     .delete-btn {
-      background: #198053;
+      background: #ff3385;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -97,7 +97,7 @@
       transition: background 0.3s ease;
     }
     .delete-btn:hover {
-      background: #065120;
+      background: #cc0066;
     }
   </style>
 </head>
@@ -110,29 +110,84 @@
     <h2>Manage Users</h2>
     <ul id="user-list" class="user-list"></ul>
   </section>
+
+  <section class="content-section">
+    <h2>Upload New Song</h2>
+    <form action="/admin/upload-song" method="POST" enctype="multipart/form-data">
+      <input class="input-field" type="text" name="title" placeholder="Song Title" required />
+      <label>Audio File:</label>
+      <input class="input-field" type="file" name="file" accept="audio/*" required />
+      <label>Image:</label>
+      <input class="input-field" type="file" name="image" accept="image/*" required />
+      <button type="submit" class="btn-primary">Upload Song</button>
+    </form>
+  </section>
+
+  <section class="content-section">
+    <h2>Uploaded Songs</h2>
+    <ul id="song-list" class="sound-list"></ul>
+  </section>
 </div>
 
 <script>
   async function fetchUsers() {
-    const response = await fetch('/admin/users');
-    const users = await response.json();
-    const userList = document.getElementById('user-list');
-    userList.innerHTML = users.map(user => `
-      <li>
-        <span>${user.email}</span>
-        <button onclick="deleteUser('${user._id}')" class="delete-btn">Delete</button>
-      </li>`).join('');
+    try {
+      const response = await fetch('/admin/users');
+      const users = await response.json();
+      console.log('Users fetched:', users);
+      const userList = document.getElementById('user-list');
+      userList.innerHTML = users.map(user => 
+        `<li>
+          <span>${user.email}</span>
+          <button onclick="deleteUser('${user._id}')" class="delete-btn">Delete User</button>
+        </li>`).join('');
+    } catch (error) {
+      console.error('Error fetching users in admin:', error);
+    }
   }
 
   async function deleteUser(userId) {
-    await fetch(`/admin/delete-user/${userId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    fetchUsers();
+    try {
+      await fetch(`/admin/delete-user/${userId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      fetchUsers();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   }
-  fetchUsers();
 
+  async function fetchSongs() {
+    try {
+      const response = await fetch('/admin/songs');
+      const songs = await response.json();
+      console.log('Songs fetched in admin:', songs);
+      const songList = document.getElementById('song-list');
+      songList.innerHTML = songs.map(song => 
+        `<li>
+          <span>${song.title}</span>
+          <button onclick="deleteSong('${song._id}')" class="delete-btn">Delete Song</button>
+        </li>`).join('');
+    } catch (error) {
+      console.error('Error fetching songs in admin:', error);
+    }
+  }
+
+  async function deleteSong(songId) {
+    try {
+      await fetch(`/admin/delete-song/${songId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      fetchSongs();
+    } catch (error) {
+      console.error('Error deleting song:', error);
+    }
+  }
+
+  fetchUsers();
+  fetchSongs();
 </script>
 </body>
 </html>
